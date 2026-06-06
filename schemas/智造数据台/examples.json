@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/examples",
+  "title": "智造数据台 · 示例数据",
+  "description": "配置驱动模式下的示例；字段含义见 presets/jqhc-manufacturing-config.json",
+  "examples": {
+    "domain_config_ref": {
+      "config_id": "jqhc-manufacturing",
+      "config_version": "1.0.0"
+    },
+    "product_line": {
+      "product_line_id": "FCW-LINE-07",
+      "name": "药芯焊丝 7 号线",
+      "product_category": "flux_core_wire",
+      "template_id": "flux_core_wire",
+      "config_id": "jqhc-manufacturing",
+      "process_steps": [
+        "cut_strip",
+        "powder_mixing",
+        "filling_forming",
+        "rough_drawing",
+        "fine_drawing",
+        "copper_plating",
+        "winding",
+        "packaging",
+        "stock_in_out"
+      ],
+      "status": "active"
+    },
+    "equipment": {
+      "equipment_id": "PLATING-02",
+      "name": "镀铜线 #2",
+      "equipment_type": "plater",
+      "product_line_id": "FCW-LINE-07",
+      "process_step_id": "copper_plating",
+      "manufacturer": "internal",
+      "protocol": "modbus_tcp",
+      "connection": { "host": "192.168.10.105", "port": 502, "slave_id": 1 },
+      "enabled": true
+    },
+    "data_point": {
+      "data_point_id": "coating_thickness_top_um",
+      "equipment_id": "PLATING-02",
+      "display_name": "镀层厚度(上)",
+      "data_category": "process_parameter",
+      "data_type": "float",
+      "unit": "μm",
+      "process_step_id": "copper_plating",
+      "sampling_method": "xrf_sensor",
+      "sampling_freq_hz": 1,
+      "protocol_address": "40001",
+      "priority": "critical",
+      "mandatory_flag": "Y",
+      "business_value": "直接决定耐蚀指标I值",
+      "kpi_tags": ["corrosion_i_value", "quality"],
+      "spec_limits": { "lsl": 6.0, "usl": 12.0, "target": 8.0 },
+      "enabled": true
+    },
+    "process_snapshot_filling_forming": {
+      "record_id": "REC-20260605-001",
+      "record_type": "process_snapshot",
+      "config_id": "jqhc-manufacturing",
+      "template_id": "flux_core_wire",
+      "timestamp": "2026-06-05T10:15:00Z",
+      "product_line_id": "FCW-LINE-07",
+      "equipment_id": "FILLER-01",
+      "process_step_id": "filling_forming",
+      "product_batch": "FCW-20260605-B2",
+      "recipe_id": "FCW-HY830-V3",
+      "shift": "day",
+      "values": {
+        "strip_tension_N": 1200,
+        "fill_rate_kg_h": 85.2,
+        "forming_pressure_MPa": 8.5,
+        "fill_ratio_pct": 18.5,
+        "powder_leak_level": "slight",
+        "status": "RUNNING"
+      },
+      "value_meta": {
+        "fill_ratio_pct": { "data_source": "calculated", "quality": "good" },
+        "fill_rate_kg_h": { "data_source": "plc", "quality": "good" }
+      }
+    },
+    "process_snapshot_copper_plating": {
+      "record_type": "process_snapshot",
+      "config_id": "jqhc-manufacturing",
+      "timestamp": "2026-06-05T10:40:00Z",
+      "equipment_id": "PLATING-02",
+      "process_step_id": "copper_plating",
+      "product_batch": "FCW-20260605-B2",
+      "values": {
+        "line_speed_m_per_min": 90.5,
+        "current_density_A_per_dm2": 25.3,
+        "bath_temp_C": 28.5,
+        "coating_thickness_top_um": 8.3,
+        "coating_thickness_bottom_um": 8.1
+      }
+    },
+    "generic_telemetry_point": {
+      "timestamp": "2026-06-05T10:40:00Z",
+      "equipment_id": "PLATING-02",
+      "process_step_id": "copper_plating",
+      "product_batch": "FCW-20260605-B2",
+      "data_point_id": "coating_thickness_top_um",
+      "value": 8.3,
+      "unit": "μm",
+      "data_source": "sensor",
+      "quality": "good"
+    },
+    "material_event_stock_in": {
+      "event_id": "ME-20260605-001",
+      "event_type": "STOCK_IN",
+      "timestamp": "2026-06-05T14:00:00Z",
+      "material_batch": "FCW-20260605-B2",
+      "product_type": "药芯焊丝-HY830",
+      "product_category": "flux_core_wire",
+      "product_line_id": "FCW-LINE-07",
+      "quantity_kg": 1200,
+      "location": "WH-A-03-12",
+      "agv_id": "AGV-05"
+    },
+    "product_batch": {
+      "batch_id": "FCW-20260605-B2",
+      "product_line_id": "FCW-LINE-07",
+      "product_category": "flux_core_wire",
+      "recipe_id": "FCW-HY830-V3",
+      "grade": "HY-830MPa",
+      "shift": "day",
+      "status": "in_progress",
+      "started_at": "2026-06-05T08:00:00Z",
+      "parent_batches": ["STRIP-202605-A1", "FLUX-20260605-A1"]
+    },
+    "traceability_report": {
+      "report_id": "TR-20260605-001",
+      "batch_id": "FCW-20260605-B2",
+      "product_category": "flux_core_wire",
+      "grade": "HY-830MPa",
+      "generated_at": "2026-06-05T18:00:00Z",
+      "timeline": [
+        {
+          "node_id": "TL-001",
+          "process_step_id": "filling_forming",
+          "equipment_id": "FILLER-01",
+          "started_at": "2026-06-05T09:00:00Z",
+          "ended_at": "2026-06-05T10:30:00Z",
+          "key_parameters": [
+            {
+              "data_point_id": "fill_ratio_pct",
+              "display_name": "填充率",
+              "avg_value": 18.2,
+              "unit": "%",
+              "within_spec": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

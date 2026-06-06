@@ -1,0 +1,426 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/runtime-analytics",
+  "title": "智造数据台 · 运行时与分析实体",
+  "description": "物料事件、报警、OEE、SPC、追溯报告、能耗、碳足迹、数据质量等",
+  "$defs": {
+    "MaterialEvent": {
+      "type": "object",
+      "required": ["event_id", "event_type", "timestamp", "material_batch"],
+      "properties": {
+        "event_id": { "type": "string" },
+        "event_type": { "$ref": "enums.json#/$defs/MaterialEventType" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "material_batch": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "product_type": { "type": "string", "examples": ["药芯焊丝-HY830", "焊条-HY830"] },
+        "product_category": { "$ref": "enums.json#/$defs/ProductCategory" },
+        "product_line_id": { "type": "string" },
+        "production_order_id": { "type": "string" },
+        "quantity_kg": { "type": "number" },
+        "quantity_unit": { "type": "string", "enum": ["kg", "box", "spool", "piece"] },
+        "location": { "type": "string", "examples": ["WH-A-03-12", "焊条线#3-入口"] },
+        "from_location": { "type": "string" },
+        "to_location": { "type": "string" },
+        "agv_id": { "type": "string" },
+        "trace_id": { "type": "string" },
+        "correlation_id": { "type": "string" },
+        "operator": { "type": "string" },
+        "remark": { "type": "string" }
+      }
+    },
+    "AlarmEvent": {
+      "type": "object",
+      "required": ["alarm_id", "equipment_id", "alarm_code", "triggered_at", "severity"],
+      "properties": {
+        "alarm_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "equipment_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "product_batch": { "type": "string" },
+        "alarm_code": { "type": "string" },
+        "alarm_message": { "type": "string" },
+        "severity": { "$ref": "enums.json#/$defs/AlarmSeverity" },
+        "triggered_at": { "type": "string", "format": "date-time" },
+        "resolved_at": { "type": "string", "format": "date-time" },
+        "duration_sec": { "type": "number" },
+        "handle_status": { "$ref": "enums.json#/$defs/AlarmHandleStatus" },
+        "handler": { "type": "string" },
+        "handle_note": { "type": "string" }
+      }
+    },
+    "LogisticsTask": {
+      "type": "object",
+      "required": ["task_id", "factory_id", "task_type", "created_at", "status"],
+      "properties": {
+        "task_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "task_type": { "type": "string", "enum": ["feed_line", "transfer_wip", "stock_in", "stock_out", "return_to_hold", "replenishment"] },
+        "material_batch": { "type": "string" },
+        "product_batch": { "type": "string" },
+        "production_order_id": { "type": "string" },
+        "source_location_id": { "type": "string" },
+        "target_location_id": { "type": "string" },
+        "quantity_kg": { "type": "number" },
+        "agv_id": { "type": "string" },
+        "priority": { "type": "string", "enum": ["urgent", "high", "normal", "low"] },
+        "created_at": { "type": "string", "format": "date-time" },
+        "assigned_at": { "type": "string", "format": "date-time" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "completed_at": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["created", "assigned", "picking", "transporting", "waiting_dropoff", "completed", "failed", "cancelled"] },
+        "failure_reason": { "type": "string" },
+        "trace_id": { "type": "string" },
+        "correlation_id": { "type": "string" }
+      }
+    },
+    "QualityGateEvent": {
+      "type": "object",
+      "required": ["gate_event_id", "factory_id", "batch_id", "process_step_id", "decision", "decided_at"],
+      "properties": {
+        "gate_event_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "batch_id": { "type": "string" },
+        "process_step_id": { "$ref": "enums.json#/$defs/ProcessStepId" },
+        "inspection_id": { "type": "string" },
+        "gate_type": { "type": "string", "enum": ["incoming", "in_process", "pre_transfer", "final_release"] },
+        "decision": { "type": "string", "enum": ["pass", "hold", "rework", "scrap"] },
+        "reason_code": { "type": "string" },
+        "reason_text": { "type": "string" },
+        "decided_by": { "type": "string" },
+        "decided_at": { "type": "string", "format": "date-time" },
+        "trace_id": { "type": "string" }
+      }
+    },
+    "OeeRecord": {
+      "type": "object",
+      "required": ["record_id", "equipment_id", "period_start", "period_end"],
+      "properties": {
+        "record_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "equipment_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "shift": { "$ref": "enums.json#/$defs/ShiftType" },
+        "period_start": { "type": "string", "format": "date-time" },
+        "period_end": { "type": "string", "format": "date-time" },
+        "planned_production_time_sec": { "type": "number" },
+        "running_time_sec": { "type": "number" },
+        "downtime_sec": { "type": "number" },
+        "alarm_time_sec": { "type": "number" },
+        "ideal_cycle_count": { "type": "number" },
+        "actual_cycle_count": { "type": "number" },
+        "good_count": { "type": "number" },
+        "reject_count": { "type": "number" },
+        "availability_pct": { "type": "number" },
+        "performance_pct": { "type": "number" },
+        "quality_pct": { "type": "number" },
+        "oee_pct": { "type": "number" },
+        "downtime_reasons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "reason_code": { "type": "string" },
+              "reason_text": { "type": "string" },
+              "duration_sec": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "SpcConfig": {
+      "type": "object",
+      "required": ["spc_id", "data_point_id", "product_line_id"],
+      "properties": {
+        "spc_id": { "type": "string" },
+        "data_point_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "chart_type": { "type": "string", "enum": ["xbar_r", "xbar_s", "i_mr", "p", "np", "c", "u"] },
+        "subgroup_size": { "type": "integer", "minimum": 1 },
+        "rules_enabled": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/SpcRule" }
+        },
+        "control_limits": {
+          "type": "object",
+          "properties": {
+            "ucl": { "type": "number" },
+            "lcl": { "type": "number" },
+            "center_line": { "type": "number" }
+          }
+        },
+        "spec_limits": {
+          "type": "object",
+          "properties": {
+            "usl": { "type": "number" },
+            "lsl": { "type": "number" },
+            "target": { "type": "number" }
+          }
+        },
+        "enabled": { "type": "boolean" }
+      }
+    },
+    "SpcDataPoint": {
+      "type": "object",
+      "required": ["timestamp", "spc_id", "value"],
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "spc_id": { "type": "string" },
+        "product_batch": { "type": "string" },
+        "value": { "type": "number" },
+        "subgroup_index": { "type": "integer" },
+        "is_violation": { "type": "boolean" },
+        "violated_rules": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/SpcRule" }
+        },
+        "cpk": { "type": "number" },
+        "ppk": { "type": "number" }
+      }
+    },
+    "BatchTimelineNode": {
+      "type": "object",
+      "required": ["node_id", "process_step_id", "started_at"],
+      "properties": {
+        "node_id": { "type": "string" },
+        "process_step_id": { "$ref": "enums.json#/$defs/ProcessStepId" },
+        "equipment_id": { "type": "string" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "ended_at": { "type": "string", "format": "date-time" },
+        "key_parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "data_point_id": { "type": "string" },
+              "display_name": { "type": "string" },
+              "avg_value": { "type": "number" },
+              "min_value": { "type": "number" },
+              "max_value": { "type": "number" },
+              "unit": { "type": "string" },
+              "within_spec": { "type": "boolean" }
+            }
+          }
+        },
+        "material_events": {
+          "type": "array",
+          "items": { "type": "string", "description": "material_event.event_id 引用" }
+        },
+        "alarms": {
+          "type": "array",
+          "items": { "type": "string", "description": "alarm_event.alarm_id 引用" }
+        }
+      }
+    },
+    "TraceabilityReport": {
+      "type": "object",
+      "required": ["report_id", "batch_id", "generated_at", "timeline"],
+      "properties": {
+        "report_id": { "type": "string" },
+        "batch_id": { "type": "string" },
+        "product_category": { "$ref": "enums.json#/$defs/ProductCategory" },
+        "grade": { "type": "string" },
+        "recipe_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "generated_by": { "type": "string" },
+        "upstream_batches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "batch_id": { "type": "string" },
+              "material_type": { "type": "string" },
+              "supplier": { "type": "string" }
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/BatchTimelineNode" }
+        },
+        "quality_summary": {
+          "type": "object",
+          "properties": {
+            "rm_mpa": { "type": "number" },
+            "kv2_j": { "type": "number" },
+            "elongation_a_pct": { "type": "number" },
+            "corrosion_i_value": { "type": "number" },
+            "first_pass": { "type": "boolean" },
+            "deviation_notes": { "type": "string" }
+          }
+        },
+        "trace_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "process_step_id": { "type": "string" },
+              "gap_description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "QualityInspection": {
+      "type": "object",
+      "required": ["inspection_id", "batch_id", "inspected_at"],
+      "properties": {
+        "inspection_id": { "type": "string" },
+        "batch_id": { "type": "string" },
+        "inspected_at": { "type": "string", "format": "date-time" },
+        "inspection_type": {
+          "type": "string",
+          "enum": ["inline", "offline", "final", "customer_witness"]
+        },
+        "rm_mpa": { "type": "number" },
+        "kv2_j": { "type": "number" },
+        "elongation_a_pct": { "type": "number" },
+        "corrosion_i_value": { "type": "number" },
+        "coating_thickness_um": { "type": "number" },
+        "fill_ratio_pct": { "type": "number" },
+        "moisture_pct": { "type": "number" },
+        "pass": { "type": "boolean" },
+        "inspector": { "type": "string" },
+        "remark": { "type": "string" }
+      }
+    },
+    "EnergyRecord": {
+      "type": "object",
+      "required": ["record_id", "timestamp", "product_line_id"],
+      "properties": {
+        "record_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "product_batch": { "type": "string" },
+        "power_kwh": { "type": "number" },
+        "green_power_kwh": { "type": "number" },
+        "grid_power_kwh": { "type": "number" },
+        "pv_generation_kwh": { "type": "number" },
+        "wind_generation_kwh": { "type": "number" },
+        "waste_heat_recovery_kwh": { "type": "number" },
+        "specific_energy_kwh_per_t": { "type": "number" }
+      }
+    },
+    "FactoryEnergySnapshot": {
+      "type": "object",
+      "required": ["snapshot_id", "factory_id", "timestamp"],
+      "properties": {
+        "snapshot_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "pv_generation_kwh": { "type": "number" },
+        "wind_generation_kwh": { "type": "number" },
+        "grid_import_kwh": { "type": "number" },
+        "waste_heat_recovery_kwh": { "type": "number" },
+        "total_consumption_kwh": { "type": "number" },
+        "green_power_ratio_pct": { "type": "number" },
+        "carbon_reduction_kg": { "type": "number" },
+        "line_breakdown": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["product_line_id", "consumption_kwh"],
+            "properties": {
+              "product_line_id": { "type": "string" },
+              "consumption_kwh": { "type": "number" },
+              "specific_energy_kwh_per_t": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "CarbonFootprintRecord": {
+      "type": "object",
+      "required": ["record_id", "batch_id", "calculated_at"],
+      "properties": {
+        "record_id": { "type": "string" },
+        "batch_id": { "type": "string" },
+        "order_ref": { "type": "string" },
+        "calculated_at": { "type": "string", "format": "date-time" },
+        "scope1_kg_co2e": { "type": "number" },
+        "scope2_kg_co2e": { "type": "number" },
+        "scope3_kg_co2e": { "type": "number" },
+        "total_kg_co2e": { "type": "number" },
+        "green_power_offset_kg_co2e": { "type": "number" },
+        "methodology": { "type": "string", "examples": ["CBAM_template_v1"] },
+        "export_destination": { "type": "string" },
+        "remark": { "type": "string" }
+      }
+    },
+    "DataQualityAlert": {
+      "type": "object",
+      "required": ["alert_id", "issue_type", "detected_at"],
+      "properties": {
+        "alert_id": { "type": "string" },
+        "issue_type": { "$ref": "enums.json#/$defs/DataQualityIssueType" },
+        "detected_at": { "type": "string", "format": "date-time" },
+        "equipment_id": { "type": "string" },
+        "data_point_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "description": { "type": "string" },
+        "severity": { "$ref": "enums.json#/$defs/AlarmSeverity" },
+        "resolved": { "type": "boolean" }
+      }
+    },
+    "ExecutiveKpiSnapshot": {
+      "type": "object",
+      "required": ["snapshot_id", "period", "generated_at"],
+      "properties": {
+        "snapshot_id": { "type": "string" },
+        "period": { "type": "string", "enum": ["daily", "weekly", "monthly", "quarterly"] },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "factory_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "first_pass_yield_pct": { "type": "number" },
+        "avg_delivery_days": { "type": "number" },
+        "oee_pct": { "type": "number" },
+        "unplanned_downtime_pct": { "type": "number" },
+        "energy_per_ton_kwh": { "type": "number" },
+        "export_compliance_rate_pct": { "type": "number" },
+        "flux_core_wire_output_t": { "type": "number" },
+        "capacity_utilization_pct": { "type": "number" }
+      }
+    },
+    "OrderDeliverySnapshot": {
+      "type": "object",
+      "required": ["snapshot_id", "factory_id", "production_order_id", "generated_at", "delivery_risk_level"],
+      "properties": {
+        "snapshot_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "production_order_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "planned_quantity_t": { "type": "number" },
+        "completed_quantity_t": { "type": "number" },
+        "due_date": { "type": "string", "format": "date-time" },
+        "estimated_ship_date": { "type": "string", "format": "date-time" },
+        "delivery_risk_level": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "blocking_reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "AuditLog": {
+      "type": "object",
+      "required": ["log_id", "timestamp", "user_id", "action"],
+      "properties": {
+        "log_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "user_id": { "type": "string" },
+        "action": { "type": "string" },
+        "entity_type": { "type": "string" },
+        "entity_id": { "type": "string" },
+        "before": { "type": "object" },
+        "after": { "type": "object" },
+        "ip_address": { "type": "string" }
+      }
+    }
+  }
+}

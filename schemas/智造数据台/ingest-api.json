@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/ingest-api",
+  "title": "智造数据台 · 接入与查询 API 契约（POC）",
+  "description": "产线模拟器（或未来边缘网关）与智造数据台之间的 HTTP/JSON 接口；payload 引用 telemetry-record 与 runtime-analytics",
+  "$defs": {
+    "SourceHeader": {
+      "type": "object",
+      "description": "HTTP 请求头建议字段（文档性，非 body）",
+      "properties": {
+        "X-Source": {
+          "type": "string",
+          "enum": ["line-simulator", "edge-gateway", "manual-import"],
+          "description": "数据来源类型"
+        },
+        "X-Source-Instance": {
+          "type": "string",
+          "examples": ["sim-fcw-07-001", "gw-fcw-line-07"]
+        }
+      }
+    },
+    "IngestEnvelope": {
+      "type": "object",
+      "required": ["source", "sent_at", "records"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["line-simulator", "edge-gateway", "manual-import"]
+        },
+        "source_instance": { "type": "string" },
+        "sent_at": { "type": "string", "format": "date-time" },
+        "records": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/TelemetryIngestRecord" }
+        }
+      }
+    },
+    "TelemetryIngestRecord": {
+      "oneOf": [
+        { "$ref": "telemetry-record.json#/$defs/ProcessSnapshot" },
+        { "$ref": "telemetry-record.json#/$defs/TelemetryRecord" },
+        { "$ref": "telemetry-record.json#/$defs/EquipmentStatusRecord" }
+      ]
+    },
+    "EventIngestEnvelope": {
+      "type": "object",
+      "required": ["source", "sent_at", "events"],
+      "properties": {
+        "source": { "type": "string" },
+        "source_instance": { "type": "string" },
+        "sent_at": { "type": "string", "format": "date-time" },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/EventIngestItem" }
+        }
+      }
+    },
+    "EventIngestItem": {
+      "oneOf": [
+        { "$ref": "runtime-analytics.json#/$defs/MaterialEvent" },
+        { "$ref": "runtime-analytics.json#/$defs/AlarmEvent" }
+      ]
+    },
+    "BatchIngestEnvelope": {
+      "type": "object",
+      "required": ["source", "sent_at", "batches"],
+      "properties": {
+        "source": { "type": "string" },
+        "source_instance": { "type": "string" },
+        "sent_at": { "type": "string", "format": "date-time" },
+        "batches": {
+          "type": "array",
+          "items": { "$ref": "entities.json#/$defs/ProductBatch" }
+        }
+      }
+    },
+    "HeartbeatRequest": {
+      "type": "object",
+      "required": ["source", "source_instance", "timestamp"],
+      "properties": {
+        "source": { "type": "string" },
+        "source_instance": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "product_line_id": { "type": "string" },
+        "scenario_id": {
+          "type": "string",
+          "description": "模拟器可选：当前场景",
+          "examples": ["normal_shift", "plating_alarm"]
+        },
+        "speed_multiplier": { "type": "number", "minimum": 0.1, "default": 1 }
+      }
+    },
+    "IngestResponse": {
+      "type": "object",
+      "required": ["accepted", "rejected"],
+      "properties": {
+        "accepted": { "type": "integer", "minimum": 0 },
+        "rejected": { "type": "integer", "minimum": 0 },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["index", "code", "message"],
+            "properties": {
+              "index": { "type": "integer" },
+              "code": {
+                "type": "string",
+                "enum": [
+                  "UNKNOWN_FIELD",
+                  "UNKNOWN_STEP",
+                  "UNKNOWN_EQUIPMENT",
+                  "INVALID_CONFIG",
+                  "SCHEMA_VIOLATION",
+                  "CLOCK_SKEW"
+                ]
+              },
+              "message": { "type": "string" }
+            }
+          }
+        },
+        "buffer_watermark": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RingBuffer 最早仍保留的时间点"
+        }
+      }
+    },
+    "LineOverviewView": {
+      "type": "object",
+      "description": "GET /v1/state/lines/{lineId}/overview 响应",
+      "required": ["product_line_id", "computed_at", "data_source", "kpi_bar", "process_pipeline"],
+      "properties": {
+        "product_line_id": { "type": "string" },
+        "computed_at": { "type": "string", "format": "date-time" },
+        "data_source": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string" },
+            "instance": { "type": "string" },
+            "connected": { "type": "boolean" },
+            "last_heartbeat_at": { "type": "string", "format": "date-time" }
+          }
+        },
+        "current_batch": { "$ref": "entities.json#/$defs/ProductBatch" },
+        "kpi_bar": {
+          "type": "object",
+          "properties": {
+            "oee_pct": { "type": "number" },
+            "shift_output_t": { "type": "number" },
+            "first_pass_yield_pct": { "type": "number" },
+            "pending_alarms": { "type": "integer" }
+          }
+        },
+        "process_pipeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["process_step_id", "display_name", "aggregate_status"],
+            "properties": {
+              "process_step_id": { "type": "string" },
+              "display_name": { "type": "string" },
+              "aggregate_status": {
+                "type": "string",
+                "enum": ["running", "alarm", "stopped", "manual", "unknown"]
+              }
+            }
+          }
+        },
+        "buffer_window_hours": {
+          "type": "number",
+          "description": "POC 时序窗口长度，供 UI 提示"
+        }
+      }
+    },
+    "TrendSeriesView": {
+      "type": "object",
+      "description": "GET /v1/trends 响应",
+      "properties": {
+        "line_id": { "type": "string" },
+        "range": { "type": "string", "enum": ["shift", "batch", "buffer", "custom"] },
+        "range_start": { "type": "string", "format": "date-time" },
+        "range_end": { "type": "string", "format": "date-time" },
+        "series": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["field_id", "points"],
+            "properties": {
+              "field_id": { "type": "string" },
+              "display_name": { "type": "string" },
+              "unit": { "type": "string" },
+              "spec_limits": {
+                "type": "object",
+                "properties": {
+                  "lsl": { "type": "number" },
+                  "usl": { "type": "number" },
+                  "target": { "type": "number" }
+                }
+              },
+              "points": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["t", "v"],
+                  "properties": {
+                    "t": { "type": "string", "format": "date-time" },
+                    "v": true,
+                    "quality": { "$ref": "enums.json#/$defs/TelemetryQuality" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "BatchTimelineView": {
+      "type": "object",
+      "description": "GET /v1/compute/batches/{batchId}/timeline 响应",
+      "properties": {
+        "batch_id": { "type": "string" },
+        "computed_at": { "type": "string", "format": "date-time" },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["process_step_id", "status"],
+            "properties": {
+              "process_step_id": { "type": "string" },
+              "display_name": { "type": "string" },
+              "status": {
+                "type": "string",
+                "enum": ["completed", "in_progress", "pending", "anomaly"]
+              },
+              "started_at": { "type": "string", "format": "date-time" },
+              "ended_at": { "type": "string", "format": "date-time" },
+              "key_parameters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field_id": { "type": "string" },
+                    "mean": { "type": "number" },
+                    "max": { "type": "number" },
+                    "spec_compliance_pct": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "trace_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "gap_type": { "type": "string" },
+              "message": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "StreamMessage": {
+      "type": "object",
+      "description": "WebSocket /v1/stream/lines/{lineId} 推送",
+      "required": ["type", "payload", "emitted_at"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["overview_patch", "equipment_latest", "alarm_new", "batch_changed", "source_status"]
+        },
+        "payload": { "type": "object" },
+        "emitted_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "endpoints": {
+    "ingest": [
+      { "method": "POST", "path": "/v1/ingest/telemetry", "body": { "$ref": "#/$defs/IngestEnvelope" }, "response": { "$ref": "#/$defs/IngestResponse" } },
+      { "method": "POST", "path": "/v1/ingest/events", "body": { "$ref": "#/$defs/EventIngestEnvelope" }, "response": { "$ref": "#/$defs/IngestResponse" } },
+      { "method": "POST", "path": "/v1/ingest/batches", "body": { "$ref": "#/$defs/BatchIngestEnvelope" }, "response": { "$ref": "#/$defs/IngestResponse" } },
+      { "method": "POST", "path": "/v1/ingest/heartbeat", "body": { "$ref": "#/$defs/HeartbeatRequest" }, "response": { "type": "object", "properties": { "ok": { "type": "boolean" } } } }
+    ],
+    "query": [
+      { "method": "GET", "path": "/v1/state/lines/{lineId}/overview", "response": { "$ref": "#/$defs/LineOverviewView" } },
+      { "method": "GET", "path": "/v1/trends", "response": { "$ref": "#/$defs/TrendSeriesView" } },
+      { "method": "GET", "path": "/v1/compute/batches/{batchId}/timeline", "response": { "$ref": "#/$defs/BatchTimelineView" } }
+    ],
+    "stream": [
+      { "protocol": "WebSocket", "path": "/v1/stream/lines/{lineId}", "message": { "$ref": "#/$defs/StreamMessage" } }
+    ]
+  }
+}

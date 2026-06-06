@@ -1,0 +1,255 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/telemetry-payloads",
+  "title": "智造数据台 · 工艺遥测载荷（遗留类型化参考）",
+  "description": "【参考用】按工序硬编码的载荷示例。正式运行时请使用 telemetry-record.json（通用 values 结构）+ presets/jqhc-manufacturing-config.json（字段定义）。新增工序/字段仅需改 DomainConfig，无需改本文件。",
+  "deprecated": true,
+  "$defs": {
+    "TelemetryBase": {
+      "type": "object",
+      "required": ["timestamp", "equipment_id", "product_batch"],
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "equipment_id": { "type": "string" },
+        "product_batch": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "recipe_id": { "type": "string" },
+        "shift": { "$ref": "enums.json#/$defs/ShiftType" },
+        "data_source": { "$ref": "enums.json#/$defs/DataSourceType" },
+        "quality": { "$ref": "enums.json#/$defs/TelemetryQuality" }
+      }
+    },
+    "WeldingRodWireDrawing": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "wire_drawing" },
+            "line_speed_m_per_min": { "type": "number" },
+            "motor_rpm": { "type": "number" },
+            "current_A": { "type": "number" },
+            "voltage_V": { "type": "number" },
+            "inlet_diameter_um": { "type": "number" },
+            "outlet_diameter_um": { "type": "number" },
+            "tension_kN": { "type": "number" },
+            "status": { "$ref": "enums.json#/$defs/EquipmentStatus" }
+          }
+        }
+      ]
+    },
+    "WeldingRodCutting": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "cutting" },
+            "cutting_speed_cuts_per_min": { "type": "number" },
+            "length_mm": { "type": "number" },
+            "total_count": { "type": "integer" },
+            "fault_code": { "type": "string" },
+            "status": { "$ref": "enums.json#/$defs/EquipmentStatus" }
+          }
+        }
+      ]
+    },
+    "PowderMixing": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "powder_mixing" },
+            "batch_id": { "type": "string" },
+            "recipe_id": { "type": "string" },
+            "ingredients": {
+              "type": "object",
+              "additionalProperties": { "type": "number" },
+              "examples": [{ "CaF2_kg": 12.5, "SiO2_kg": 8.3, "FeMn_kg": 5.1 }]
+            },
+            "mixing_time_s": { "type": "number" },
+            "mixing_rpm": { "type": "number" },
+            "motor_current_A": { "type": "number" },
+            "ingredient_batch_ids": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        }
+      ]
+    },
+    "WeldingRodCoating": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "coating" },
+            "core_speed_m_per_min": { "type": "number" },
+            "coating_pressure_MPa": { "type": "number" },
+            "coating_feed_rate": { "type": "number" },
+            "coating_thickness_mm": { "type": "number" },
+            "zone_temp_C": { "type": "number" }
+          }
+        }
+      ]
+    },
+    "WeldingRodDrying": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "drying" },
+            "zone_id": { "type": "string" },
+            "set_temp_C": { "type": "number" },
+            "actual_temp_C": { "type": "number" },
+            "belt_speed_m_per_min": { "type": "number" },
+            "humidity_pct": { "type": "number" },
+            "moisture_pct": { "type": "number" },
+            "temp_curve": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["elapsed_s", "temp_C"],
+                "properties": {
+                  "elapsed_s": { "type": "number" },
+                  "temp_C": { "type": "number" }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "FluxCoreCutStrip": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "cut_strip" },
+            "strip_batch_id": { "type": "string" },
+            "strip_thickness_mm": { "type": "number" },
+            "uncoil_tension_N": { "type": "number" },
+            "cut_length_mm": { "type": "number" },
+            "line_speed_m_per_min": { "type": "number" },
+            "status": { "$ref": "enums.json#/$defs/EquipmentStatus" }
+          }
+        }
+      ]
+    },
+    "FluxCoreFillingForming": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "filling_forming" },
+            "strip_tension_N": { "type": "number" },
+            "fill_rate_kg_h": { "type": "number" },
+            "forming_pressure_MPa": { "type": "number" },
+            "fill_ratio_pct": { "type": "number", "description": "填充率" },
+            "powder_leak_level": { "type": "string", "enum": ["none", "slight", "severe"] }
+          }
+        }
+      ]
+    },
+    "WireDrawing": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "enum": ["rough_drawing", "fine_drawing", "wire_drawing"] },
+            "line_speed_m_per_min": { "type": "number" },
+            "tension_kN": { "type": "number" },
+            "motor_rpm": { "type": "number" },
+            "current_A": { "type": "number" },
+            "inlet_diameter_um": { "type": "number" },
+            "outlet_diameter_um": { "type": "number" },
+            "surface_defect": { "type": "string", "enum": ["none", "crack", "peeling", "other"] },
+            "status": { "$ref": "enums.json#/$defs/EquipmentStatus" }
+          }
+        }
+      ]
+    },
+    "CopperPlating": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "copper_plating" },
+            "line_speed_m_per_min": { "type": "number" },
+            "current_density_A_per_dm2": { "type": "number" },
+            "bath_temp_C": { "type": "number" },
+            "bath_ph": { "type": "number" },
+            "coating_thickness_top_um": { "type": "number" },
+            "coating_thickness_bottom_um": { "type": "number" },
+            "coating_thickness_left_um": { "type": "number" },
+            "coating_thickness_right_um": { "type": "number" }
+          }
+        }
+      ]
+    },
+    "Winding": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "properties": {
+            "process_step": { "const": "winding" },
+            "motor_rpm": { "type": "number" },
+            "tension_N": { "type": "number" },
+            "spool_id": { "type": "string" },
+            "status": { "$ref": "enums.json#/$defs/EquipmentStatus" }
+          }
+        }
+      ]
+    },
+    "EquipmentStatusSnapshot": {
+      "allOf": [
+        { "$ref": "#/$defs/TelemetryBase" },
+        {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "process_step": { "type": "string" },
+            "status": { "$ref": "enums.json#/$defs/EquipmentStatus" },
+            "run_mode": { "$ref": "enums.json#/$defs/RunMode" },
+            "motor_rpm": { "type": "number" },
+            "current_A": { "type": "number" },
+            "voltage_V": { "type": "number" },
+            "temperature_C": { "type": "number" },
+            "alarm_code": { "type": "string" },
+            "alarm_message": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "GenericTelemetryPoint": {
+      "type": "object",
+      "required": ["timestamp", "equipment_id", "data_point_id", "value"],
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "equipment_id": { "type": "string" },
+        "product_batch": { "type": "string" },
+        "data_point_id": { "type": "string" },
+        "value": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "array" },
+            { "type": "object" }
+          ]
+        },
+        "unit": { "type": "string" },
+        "data_source": { "$ref": "enums.json#/$defs/DataSourceType" },
+        "quality": { "$ref": "enums.json#/$defs/TelemetryQuality" }
+      }
+    }
+  }
+}

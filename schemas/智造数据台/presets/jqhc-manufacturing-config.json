@@ -1,0 +1,2360 @@
+{
+  "config_id": "jqhc-manufacturing",
+  "config_version": "1.0.0",
+  "display_name": "金桥焊材 · 制造领域默认配置",
+  "updated_at": "2026-06-05T00:00:00Z",
+  "process_steps": [
+    {
+      "step_id": "wire_drawing",
+      "display_name": "拔丝",
+      "description": "焊条钢芯拔丝工序，控制线径与张力",
+      "sort_hint": 10,
+      "applicable_product_categories": [
+        "welding_rod"
+      ],
+      "default_equipment_types": [
+        "wire_drawer"
+      ]
+    },
+    {
+      "step_id": "cutting",
+      "display_name": "切丝",
+      "description": "焊条钢芯定长切割",
+      "sort_hint": 20,
+      "applicable_product_categories": [
+        "welding_rod"
+      ],
+      "default_equipment_types": [
+        "cutter"
+      ]
+    },
+    {
+      "step_id": "powder_mixing",
+      "display_name": "配粉搅拌",
+      "description": "药粉/涂层粉配方配制与搅拌",
+      "sort_hint": 30,
+      "applicable_product_categories": [
+        "welding_rod",
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "mixer"
+      ]
+    },
+    {
+      "step_id": "coating",
+      "display_name": "压涂",
+      "description": "焊条药皮压涂成型",
+      "sort_hint": 40,
+      "applicable_product_categories": [
+        "welding_rod"
+      ],
+      "default_equipment_types": [
+        "coater"
+      ]
+    },
+    {
+      "step_id": "drying",
+      "display_name": "烘干",
+      "description": "焊条药皮烘干脱水",
+      "sort_hint": 50,
+      "applicable_product_categories": [
+        "welding_rod"
+      ],
+      "default_equipment_types": [
+        "dryer"
+      ]
+    },
+    {
+      "step_id": "cut_strip",
+      "display_name": "裁带",
+      "description": "药芯焊丝钢带裁切开卷",
+      "sort_hint": 60,
+      "applicable_product_categories": [
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "strip_cutter"
+      ]
+    },
+    {
+      "step_id": "filling_forming",
+      "display_name": "填充成型",
+      "description": "药粉填充与钢带合缝成型",
+      "sort_hint": 70,
+      "applicable_product_categories": [
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "filler"
+      ]
+    },
+    {
+      "step_id": "rough_drawing",
+      "display_name": "粗拔",
+      "description": "焊丝粗拉减径",
+      "sort_hint": 80,
+      "applicable_product_categories": [
+        "solid_wire",
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "wire_drawer"
+      ]
+    },
+    {
+      "step_id": "fine_drawing",
+      "display_name": "细拔",
+      "description": "焊丝精拉至成品线径",
+      "sort_hint": 90,
+      "applicable_product_categories": [
+        "solid_wire",
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "wire_drawer"
+      ]
+    },
+    {
+      "step_id": "copper_plating",
+      "display_name": "镀铜",
+      "description": "焊丝表面镀铜防腐",
+      "sort_hint": 100,
+      "applicable_product_categories": [
+        "solid_wire",
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "plater"
+      ]
+    },
+    {
+      "step_id": "winding",
+      "display_name": "层绕",
+      "description": "焊丝卷绕收线",
+      "sort_hint": 110,
+      "applicable_product_categories": [
+        "solid_wire",
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "winder"
+      ]
+    },
+    {
+      "step_id": "packaging",
+      "display_name": "包装",
+      "description": "成品包装贴标",
+      "sort_hint": 120,
+      "applicable_product_categories": [
+        "welding_rod",
+        "solid_wire",
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "packager"
+      ]
+    },
+    {
+      "step_id": "stock_in_out",
+      "display_name": "出入库",
+      "description": "成品/物料出入库与AGV转运",
+      "sort_hint": 130,
+      "applicable_product_categories": [
+        "welding_rod",
+        "solid_wire",
+        "flux_core_wire"
+      ],
+      "default_equipment_types": [
+        "agv"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "field_id": "status",
+      "display_name": "设备状态",
+      "description": "设备运行状态枚举",
+      "data_type": "string",
+      "data_category": "equipment_status",
+      "value_constraint": {
+        "enum_values": [
+          "RUNNING",
+          "STOPPED",
+          "ALARM",
+          "MANUAL",
+          "MAINTENANCE",
+          "UNKNOWN"
+        ]
+      },
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "oee",
+        "downtime"
+      ],
+      "business_value": "产线可用性与OEE计算基础",
+      "tags": [
+        "recommended_sensor"
+      ]
+    },
+    {
+      "field_id": "run_mode",
+      "display_name": "运行模式",
+      "description": "自动/手动/停机模式",
+      "data_type": "string",
+      "data_category": "equipment_status",
+      "value_constraint": {
+        "enum_values": [
+          "auto",
+          "manual",
+          "stopped"
+        ]
+      },
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "oee"
+      ],
+      "business_value": "区分计划停机与异常停机"
+    },
+    {
+      "field_id": "motor_rpm",
+      "display_name": "电机转速",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "rpm",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "oee",
+        "energy"
+      ],
+      "business_value": "驱动负荷与能耗关联分析"
+    },
+    {
+      "field_id": "current_A",
+      "display_name": "电流",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "A",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "energy"
+      ],
+      "business_value": "电机负荷监控"
+    },
+    {
+      "field_id": "voltage_V",
+      "display_name": "电压",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "V",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "low",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "energy"
+      ],
+      "business_value": "电气系统健康监测"
+    },
+    {
+      "field_id": "temperature_C",
+      "display_name": "温度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "°C",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "工艺热状态监控"
+    },
+    {
+      "field_id": "alarm_code",
+      "display_name": "报警代码",
+      "data_type": "string",
+      "data_category": "equipment_status",
+      "default_sampling_method": "plc_register",
+      "default_sampling_trigger": "on_change",
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "downtime",
+        "oee"
+      ],
+      "business_value": "故障根因分析与停机追溯",
+      "tags": [
+        "recommended_sensor"
+      ]
+    },
+    {
+      "field_id": "line_speed_m_per_min",
+      "display_name": "线速度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "m/min",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "delivery_cycle",
+        "oee"
+      ],
+      "business_value": "产能与交付周期核心指标",
+      "tags": [
+        "recommended_sensor"
+      ]
+    },
+    {
+      "field_id": "inlet_diameter_um",
+      "display_name": "入口线径",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "μm",
+      "default_sampling_method": "laser_sensor",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "traceability"
+      ],
+      "business_value": "拔丝前后线径追溯"
+    },
+    {
+      "field_id": "outlet_diameter_um",
+      "display_name": "出口线径",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "μm",
+      "default_sampling_method": "laser_sensor",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "first_pass_yield"
+      ],
+      "business_value": "成品线径合规判定",
+      "tags": [
+        "recommended_sensor",
+        "traceability_key"
+      ]
+    },
+    {
+      "field_id": "tension_kN",
+      "display_name": "张力",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "kN",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 2,
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "rm"
+      ],
+      "business_value": "影响抗拉强度与断丝率"
+    },
+    {
+      "field_id": "cutting_speed_cuts_per_min",
+      "display_name": "切割速度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "cuts/min",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "delivery_cycle",
+        "oee"
+      ],
+      "business_value": "切丝产能监控"
+    },
+    {
+      "field_id": "length_mm",
+      "display_name": "切割长度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "mm",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "compliance"
+      ],
+      "business_value": "焊条长度规格合规"
+    },
+    {
+      "field_id": "total_count",
+      "display_name": "累计切割数",
+      "data_type": "integer",
+      "data_category": "process_parameter",
+      "unit": "pcs",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "oee",
+        "delivery_cycle"
+      ],
+      "business_value": "产量统计"
+    },
+    {
+      "field_id": "fault_code",
+      "display_name": "故障代码",
+      "data_type": "string",
+      "data_category": "equipment_status",
+      "default_sampling_method": "plc_register",
+      "default_sampling_trigger": "on_change",
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "downtime"
+      ],
+      "business_value": "切丝设备故障诊断"
+    },
+    {
+      "field_id": "batch_id",
+      "display_name": "批次号",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_batch_start",
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "药粉批次追溯链起点",
+      "tags": [
+        "batch_key",
+        "traceability_key"
+      ]
+    },
+    {
+      "field_id": "recipe_id",
+      "display_name": "配方编号",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_batch_start",
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability",
+        "compliance"
+      ],
+      "business_value": "配方版本与质量关联",
+      "tags": [
+        "batch_key"
+      ]
+    },
+    {
+      "field_id": "ingredients",
+      "display_name": "配料明细",
+      "description": "各原料名称与用量",
+      "data_type": "object",
+      "data_category": "process_parameter",
+      "value_constraint": {
+        "item_schema": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_batch_start",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability",
+        "compliance"
+      ],
+      "business_value": "配方成分追溯",
+      "tags": [
+        "traceability_key"
+      ]
+    },
+    {
+      "field_id": "ingredient_batch_ids",
+      "display_name": "原料批次号",
+      "description": "各原料对应批次标识",
+      "data_type": "object",
+      "data_category": "process_parameter",
+      "value_constraint": {
+        "item_schema": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_batch_start",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "上游原料批次关联",
+      "tags": [
+        "traceability_key"
+      ]
+    },
+    {
+      "field_id": "mixing_time_s",
+      "display_name": "搅拌时间",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "s",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "药粉均匀性保障"
+    },
+    {
+      "field_id": "mixing_rpm",
+      "display_name": "搅拌转速",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "rpm",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "搅拌工艺参数监控"
+    },
+    {
+      "field_id": "motor_current_A",
+      "display_name": "搅拌电机电流",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "A",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "energy"
+      ],
+      "business_value": "搅拌负荷与粘度间接指标"
+    },
+    {
+      "field_id": "core_speed_m_per_min",
+      "display_name": "钢芯速度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "m/min",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "delivery_cycle",
+        "quality"
+      ],
+      "business_value": "压涂线速度与药皮厚度关联"
+    },
+    {
+      "field_id": "coating_pressure_MPa",
+      "display_name": "压涂压力",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "MPa",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "药皮密实度控制",
+      "default_spec_limits": {
+        "lsl": 2.0,
+        "usl": 6.0,
+        "target": 4.0
+      }
+    },
+    {
+      "field_id": "coating_feed_rate",
+      "display_name": "涂粉喂料速率",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "kg/h",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "药皮厚度均匀性"
+    },
+    {
+      "field_id": "coating_thickness_mm",
+      "display_name": "药皮厚度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "mm",
+      "default_sampling_method": "laser_sensor",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "compliance"
+      ],
+      "business_value": "焊条药皮规格合规",
+      "tags": [
+        "recommended_sensor",
+        "traceability_key"
+      ],
+      "default_spec_limits": {
+        "lsl": 1.2,
+        "usl": 2.5,
+        "target": 1.8
+      }
+    },
+    {
+      "field_id": "zone_temp_C",
+      "display_name": "温区温度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "°C",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "压涂/烘干温区工艺控制"
+    },
+    {
+      "field_id": "zone_id",
+      "display_name": "烘干温区编号",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "多温区烘干过程定位"
+    },
+    {
+      "field_id": "set_temp_C",
+      "display_name": "设定温度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "°C",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "烘干工艺设定值"
+    },
+    {
+      "field_id": "actual_temp_C",
+      "display_name": "实际温度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "°C",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "compliance"
+      ],
+      "business_value": "烘干温度合规监控"
+    },
+    {
+      "field_id": "belt_speed_m_per_min",
+      "display_name": "网带速度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "m/min",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "delivery_cycle"
+      ],
+      "business_value": "烘干停留时间与脱水效果"
+    },
+    {
+      "field_id": "humidity_pct",
+      "display_name": "环境湿度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "%",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "烘干环境条件监控"
+    },
+    {
+      "field_id": "moisture_pct",
+      "display_name": "含水率",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "%",
+      "default_sampling_method": "calculated",
+      "default_sampling_freq_hz": 0.1,
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "compliance"
+      ],
+      "business_value": "焊条药皮含水率合规判定",
+      "tags": [
+        "recommended_sensor"
+      ],
+      "default_spec_limits": {
+        "lsl": 0.0,
+        "usl": 0.5,
+        "target": 0.2
+      }
+    },
+    {
+      "field_id": "temp_curve",
+      "display_name": "温度曲线",
+      "description": "烘干过程各时刻温度采样序列",
+      "data_type": "array",
+      "data_category": "process_parameter",
+      "value_constraint": {
+        "item_schema": {
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "type": "string"
+            },
+            "temp_C": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "default_sampling_method": "plc_register",
+      "default_sampling_trigger": "periodic",
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "traceability"
+      ],
+      "business_value": "烘干工艺曲线追溯"
+    },
+    {
+      "field_id": "strip_batch_id",
+      "display_name": "钢带批次号",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_batch_start",
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "钢带原料追溯",
+      "tags": [
+        "batch_key",
+        "traceability_key"
+      ]
+    },
+    {
+      "field_id": "strip_thickness_mm",
+      "display_name": "钢带厚度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "mm",
+      "default_sampling_method": "laser_sensor",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "钢带规格合规"
+    },
+    {
+      "field_id": "uncoil_tension_N",
+      "display_name": "开卷张力",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "N",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 2,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "裁带过程张力稳定"
+    },
+    {
+      "field_id": "cut_length_mm",
+      "display_name": "裁切长度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "mm",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "traceability"
+      ],
+      "business_value": "钢带定长裁切规格"
+    },
+    {
+      "field_id": "strip_tension_N",
+      "display_name": "钢带张力",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "N",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "rm"
+      ],
+      "business_value": "填充成型过程张力控制"
+    },
+    {
+      "field_id": "fill_rate_kg_h",
+      "display_name": "填充速率",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "kg/h",
+      "default_sampling_method": "weighing_module",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "delivery_cycle"
+      ],
+      "business_value": "药粉填充效率监控"
+    },
+    {
+      "field_id": "forming_pressure_MPa",
+      "display_name": "成型压力",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "MPa",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "合缝密实度控制"
+    },
+    {
+      "field_id": "fill_ratio_pct",
+      "display_name": "填充率",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "%",
+      "default_sampling_method": "calculated",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "first_pass_yield",
+        "kv2"
+      ],
+      "business_value": "药芯焊丝核心质量指标，影响冲击功与工艺稳定性",
+      "tags": [
+        "recommended_sensor",
+        "traceability_key"
+      ],
+      "default_spec_limits": {
+        "lsl": 15.0,
+        "usl": 22.0,
+        "target": 18.5
+      }
+    },
+    {
+      "field_id": "powder_leak_level",
+      "display_name": "漏粉等级",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "value_constraint": {
+        "enum_values": [
+          "none",
+          "slight",
+          "moderate",
+          "severe"
+        ]
+      },
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "first_pass_yield"
+      ],
+      "business_value": "漏粉缺陷早期预警"
+    },
+    {
+      "field_id": "surface_defect",
+      "display_name": "表面缺陷",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "value_constraint": {
+        "enum_values": [
+          "none",
+          "scratch",
+          "pit",
+          "oxide",
+          "other"
+        ]
+      },
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "first_pass_yield"
+      ],
+      "business_value": "拔丝表面质量判定"
+    },
+    {
+      "field_id": "current_density_A_per_dm2",
+      "display_name": "电流密度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "A/dm²",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ],
+      "business_value": "镀层厚度与耐蚀性关键控制参数",
+      "tags": [
+        "recommended_sensor"
+      ],
+      "default_spec_limits": {
+        "lsl": 18.0,
+        "usl": 32.0,
+        "target": 25.0
+      }
+    },
+    {
+      "field_id": "bath_temp_C",
+      "display_name": "镀液温度",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "°C",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.5,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ],
+      "business_value": "镀层结晶质量影响因子"
+    },
+    {
+      "field_id": "bath_ph",
+      "display_name": "镀液pH值",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "periodic",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ],
+      "business_value": "镀液化学稳定性监控",
+      "default_spec_limits": {
+        "lsl": 7.5,
+        "usl": 9.5,
+        "target": 8.5
+      }
+    },
+    {
+      "field_id": "coating_thickness_top_um",
+      "display_name": "镀层厚度(上)",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "μm",
+      "default_sampling_method": "xrf_sensor",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ],
+      "business_value": "直接决定耐蚀指标I值",
+      "tags": [
+        "recommended_sensor",
+        "traceability_key"
+      ],
+      "default_spec_limits": {
+        "lsl": 6.0,
+        "usl": 12.0,
+        "target": 8.0
+      }
+    },
+    {
+      "field_id": "coating_thickness_bottom_um",
+      "display_name": "镀层厚度(下)",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "μm",
+      "default_sampling_method": "xrf_sensor",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ],
+      "business_value": "镀层均匀性判定",
+      "tags": [
+        "recommended_sensor",
+        "traceability_key"
+      ],
+      "default_spec_limits": {
+        "lsl": 6.0,
+        "usl": 12.0,
+        "target": 8.0
+      }
+    },
+    {
+      "field_id": "coating_thickness_left_um",
+      "display_name": "镀层厚度(左)",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "μm",
+      "default_sampling_method": "xrf_sensor",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ],
+      "business_value": "镀层四向均匀性监控",
+      "tags": [
+        "recommended_sensor"
+      ]
+    },
+    {
+      "field_id": "coating_thickness_right_um",
+      "display_name": "镀层厚度(右)",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "μm",
+      "default_sampling_method": "xrf_sensor",
+      "default_sampling_freq_hz": 1,
+      "default_priority": "high",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ],
+      "business_value": "镀层四向均匀性监控",
+      "tags": [
+        "recommended_sensor"
+      ]
+    },
+    {
+      "field_id": "tension_N",
+      "display_name": "收线张力",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "N",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 2,
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "quality"
+      ],
+      "business_value": "层绕紧实度与外观质量"
+    },
+    {
+      "field_id": "spool_id",
+      "display_name": "线盘编号",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_batch_start",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "成品卷号追溯",
+      "tags": [
+        "batch_key"
+      ]
+    },
+    {
+      "field_id": "package_count",
+      "display_name": "包装数量",
+      "data_type": "integer",
+      "data_category": "process_parameter",
+      "unit": "pcs",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "delivery_cycle",
+        "oee"
+      ],
+      "business_value": "包装产出统计"
+    },
+    {
+      "field_id": "spool_count",
+      "display_name": "包装盘数",
+      "data_type": "integer",
+      "data_category": "material_flow",
+      "unit": "piece",
+      "default_sampling_method": "plc_register",
+      "default_sampling_freq_hz": 0.1,
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "delivery_cycle",
+        "oee"
+      ],
+      "business_value": "药芯焊丝层绕盘数统计"
+    },
+    {
+      "field_id": "finished_batch_id",
+      "display_name": "成品批次号",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_batch_start",
+      "default_priority": "critical",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "成品追溯链关键节点",
+      "tags": [
+        "batch_key",
+        "traceability_key"
+      ]
+    },
+    {
+      "field_id": "label_content",
+      "display_name": "标签内容",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "traceability",
+        "compliance"
+      ],
+      "business_value": "标签信息与批次一致性校验"
+    },
+    {
+      "field_id": "quantity_kg",
+      "display_name": "物料数量",
+      "data_type": "float",
+      "data_category": "material_flow",
+      "unit": "kg",
+      "default_sampling_method": "weighing_module",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability",
+        "delivery_cycle"
+      ],
+      "business_value": "出入库数量核对"
+    },
+    {
+      "field_id": "location",
+      "display_name": "库位",
+      "data_type": "string",
+      "data_category": "material_flow",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "物料存放位置追溯"
+    },
+    {
+      "field_id": "agv_id",
+      "display_name": "AGV编号",
+      "data_type": "string",
+      "data_category": "material_flow",
+      "default_sampling_method": "opc_ua_node",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "delivery_cycle",
+        "traceability"
+      ],
+      "business_value": "自动物流任务追踪"
+    },
+    {
+      "field_id": "from_location",
+      "display_name": "起始库位",
+      "data_type": "string",
+      "data_category": "material_flow",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability"
+      ],
+      "business_value": "物料流转起点"
+    },
+    {
+      "field_id": "to_location",
+      "display_name": "目标库位",
+      "data_type": "string",
+      "data_category": "material_flow",
+      "default_sampling_method": "manual_entry",
+      "default_sampling_trigger": "on_event",
+      "default_priority": "high",
+      "default_mandatory": "Y",
+      "kpi_tags": [
+        "traceability",
+        "delivery_cycle"
+      ],
+      "business_value": "物料流转终点"
+    },
+    {
+      "field_id": "mixing_uniformity",
+      "display_name": "混合均匀度(间接)",
+      "description": "混合均匀度；可选算法：current_fluctuation（搅拌电流波动）或 nir_probe（在线近红外）",
+      "data_type": "float",
+      "data_category": "process_parameter",
+      "unit": "score",
+      "default_sampling_method": "calculated",
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality",
+        "rm",
+        "kv2"
+      ],
+      "business_value": "关联焊条/药芯力学性能一致性",
+      "tags": [
+        "optional_algorithm",
+        "dual_method"
+      ],
+      "enabled": true,
+      "value_constraint": {
+        "enum_values": [
+          "current_fluctuation",
+          "nir_probe"
+        ],
+        "item_schema": {
+          "current_fluctuation": {
+            "type": "float",
+            "unit": "score",
+            "method": "搅拌电流波动分析"
+          },
+          "nir_probe": {
+            "type": "float",
+            "unit": "score",
+            "method": "在线近红外探头"
+          }
+        }
+      }
+    },
+    {
+      "field_id": "mixing_uniformity_method",
+      "display_name": "混合均匀度算法",
+      "description": "current_fluctuation=搅拌电流波动分析；nir_probe=在线近红外",
+      "data_type": "string",
+      "data_category": "process_parameter",
+      "value_constraint": {
+        "enum_values": [
+          "current_fluctuation",
+          "nir_probe"
+        ]
+      },
+      "default_sampling_method": "calculated",
+      "default_priority": "medium",
+      "default_mandatory": "N",
+      "kpi_tags": [
+        "quality"
+      ],
+      "tags": [
+        "dual_method_selector"
+      ],
+      "enabled": true
+    }
+  ],
+  "step_field_bindings": [
+    {
+      "step_id": "wire_drawing",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "current_A",
+      "sort_order": 4
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "voltage_V",
+      "sort_order": 5
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "temperature_C",
+      "sort_order": 6
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "alarm_code",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "line_speed_m_per_min",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "inlet_diameter_um",
+      "sort_order": 9
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "outlet_diameter_um",
+      "sort_order": 10,
+      "required": true
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "tension_kN",
+      "sort_order": 11
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "alarm_code",
+      "sort_order": 3,
+      "required": true
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "cutting_speed_cuts_per_min",
+      "sort_order": 4
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "length_mm",
+      "sort_order": 5,
+      "required": true
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "total_count",
+      "sort_order": 6
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "fault_code",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "motor_current_A",
+      "sort_order": 4
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "alarm_code",
+      "sort_order": 5,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "batch_id",
+      "sort_order": 6,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "recipe_id",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "ingredients",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "ingredient_batch_ids",
+      "sort_order": 9,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "mixing_time_s",
+      "sort_order": 10
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "mixing_rpm",
+      "sort_order": 11
+    },
+    {
+      "step_id": "coating",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "coating",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "coating",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "coating",
+      "field_id": "current_A",
+      "sort_order": 4
+    },
+    {
+      "step_id": "coating",
+      "field_id": "temperature_C",
+      "sort_order": 5
+    },
+    {
+      "step_id": "coating",
+      "field_id": "alarm_code",
+      "sort_order": 6,
+      "required": true
+    },
+    {
+      "step_id": "coating",
+      "field_id": "core_speed_m_per_min",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "coating",
+      "field_id": "coating_pressure_MPa",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "coating",
+      "field_id": "coating_feed_rate",
+      "sort_order": 9
+    },
+    {
+      "step_id": "coating",
+      "field_id": "coating_thickness_mm",
+      "sort_order": 10,
+      "required": true
+    },
+    {
+      "step_id": "coating",
+      "field_id": "zone_temp_C",
+      "sort_order": 11
+    },
+    {
+      "step_id": "drying",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "drying",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "drying",
+      "field_id": "alarm_code",
+      "sort_order": 3,
+      "required": true
+    },
+    {
+      "step_id": "drying",
+      "field_id": "zone_id",
+      "sort_order": 4
+    },
+    {
+      "step_id": "drying",
+      "field_id": "set_temp_C",
+      "sort_order": 5
+    },
+    {
+      "step_id": "drying",
+      "field_id": "actual_temp_C",
+      "sort_order": 6,
+      "required": true
+    },
+    {
+      "step_id": "drying",
+      "field_id": "belt_speed_m_per_min",
+      "sort_order": 7
+    },
+    {
+      "step_id": "drying",
+      "field_id": "humidity_pct",
+      "sort_order": 8
+    },
+    {
+      "step_id": "drying",
+      "field_id": "moisture_pct",
+      "sort_order": 9,
+      "required": true
+    },
+    {
+      "step_id": "drying",
+      "field_id": "temp_curve",
+      "sort_order": 10
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "alarm_code",
+      "sort_order": 3,
+      "required": true
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "line_speed_m_per_min",
+      "sort_order": 4,
+      "required": true
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "strip_batch_id",
+      "sort_order": 5,
+      "required": true
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "strip_thickness_mm",
+      "sort_order": 6,
+      "required": true
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "uncoil_tension_N",
+      "sort_order": 7
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "cut_length_mm",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "current_A",
+      "sort_order": 4
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "alarm_code",
+      "sort_order": 5,
+      "required": true
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "strip_tension_N",
+      "sort_order": 6,
+      "required": true
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "fill_rate_kg_h",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "forming_pressure_MPa",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "fill_ratio_pct",
+      "sort_order": 9,
+      "required": true
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "powder_leak_level",
+      "sort_order": 10
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "current_A",
+      "sort_order": 4
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "voltage_V",
+      "sort_order": 5
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "temperature_C",
+      "sort_order": 6
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "alarm_code",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "line_speed_m_per_min",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "inlet_diameter_um",
+      "sort_order": 9
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "outlet_diameter_um",
+      "sort_order": 10,
+      "required": true
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "tension_kN",
+      "sort_order": 11
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "surface_defect",
+      "sort_order": 12
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "current_A",
+      "sort_order": 4
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "voltage_V",
+      "sort_order": 5
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "temperature_C",
+      "sort_order": 6
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "alarm_code",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "line_speed_m_per_min",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "inlet_diameter_um",
+      "sort_order": 9
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "outlet_diameter_um",
+      "sort_order": 10,
+      "required": true
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "tension_kN",
+      "sort_order": 11
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "surface_defect",
+      "sort_order": 12
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "current_A",
+      "sort_order": 4
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "voltage_V",
+      "sort_order": 5
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "temperature_C",
+      "sort_order": 6
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "alarm_code",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "line_speed_m_per_min",
+      "sort_order": 8,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "current_density_A_per_dm2",
+      "sort_order": 9,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "bath_temp_C",
+      "sort_order": 10,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "bath_ph",
+      "sort_order": 11,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "coating_thickness_top_um",
+      "sort_order": 12,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "coating_thickness_bottom_um",
+      "sort_order": 13,
+      "required": true
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "coating_thickness_left_um",
+      "sort_order": 14
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "coating_thickness_right_um",
+      "sort_order": 15
+    },
+    {
+      "step_id": "winding",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "winding",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "winding",
+      "field_id": "motor_rpm",
+      "sort_order": 3
+    },
+    {
+      "step_id": "winding",
+      "field_id": "alarm_code",
+      "sort_order": 4,
+      "required": true
+    },
+    {
+      "step_id": "winding",
+      "field_id": "tension_N",
+      "sort_order": 5,
+      "required": true
+    },
+    {
+      "step_id": "winding",
+      "field_id": "spool_id",
+      "sort_order": 6,
+      "required": true
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "run_mode",
+      "sort_order": 2
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "alarm_code",
+      "sort_order": 3,
+      "required": true
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "package_count",
+      "sort_order": 4
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "spool_count",
+      "sort_order": 4
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "finished_batch_id",
+      "sort_order": 5,
+      "required": true
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "label_content",
+      "sort_order": 6
+    },
+    {
+      "step_id": "stock_in_out",
+      "field_id": "status",
+      "sort_order": 1,
+      "required": true
+    },
+    {
+      "step_id": "stock_in_out",
+      "field_id": "quantity_kg",
+      "sort_order": 2,
+      "required": true
+    },
+    {
+      "step_id": "stock_in_out",
+      "field_id": "location",
+      "sort_order": 3,
+      "required": true
+    },
+    {
+      "step_id": "stock_in_out",
+      "field_id": "agv_id",
+      "sort_order": 4
+    },
+    {
+      "step_id": "stock_in_out",
+      "field_id": "from_location",
+      "sort_order": 5,
+      "required": true
+    },
+    {
+      "step_id": "stock_in_out",
+      "field_id": "to_location",
+      "sort_order": 6,
+      "required": true
+    },
+    {
+      "step_id": "stock_in_out",
+      "field_id": "finished_batch_id",
+      "sort_order": 7,
+      "required": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "mixing_uniformity",
+      "sort_order": 99,
+      "required": false,
+      "enabled": true
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "mixing_uniformity_method",
+      "sort_order": 98,
+      "required": false,
+      "enabled": true
+    }
+  ],
+  "product_templates": [
+    {
+      "template_id": "welding_rod",
+      "display_name": "焊条",
+      "product_category": "welding_rod",
+      "description": "焊条标准工艺流程：拔丝→切丝→配粉→压涂→烘干→包装→出入库",
+      "steps": [
+        {
+          "step_id": "wire_drawing",
+          "sort_order": 1
+        },
+        {
+          "step_id": "cutting",
+          "sort_order": 2
+        },
+        {
+          "step_id": "powder_mixing",
+          "sort_order": 3
+        },
+        {
+          "step_id": "coating",
+          "sort_order": 4
+        },
+        {
+          "step_id": "drying",
+          "sort_order": 5
+        },
+        {
+          "step_id": "packaging",
+          "sort_order": 6
+        },
+        {
+          "step_id": "stock_in_out",
+          "sort_order": 7
+        }
+      ]
+    },
+    {
+      "template_id": "solid_wire",
+      "display_name": "实心焊丝",
+      "product_category": "solid_wire",
+      "description": "实心焊丝标准工艺流程：粗拔→细拔→镀铜→层绕→包装→出入库",
+      "steps": [
+        {
+          "step_id": "rough_drawing",
+          "sort_order": 1
+        },
+        {
+          "step_id": "fine_drawing",
+          "sort_order": 2
+        },
+        {
+          "step_id": "copper_plating",
+          "sort_order": 3
+        },
+        {
+          "step_id": "winding",
+          "sort_order": 4
+        },
+        {
+          "step_id": "packaging",
+          "sort_order": 5
+        },
+        {
+          "step_id": "stock_in_out",
+          "sort_order": 6
+        }
+      ]
+    },
+    {
+      "template_id": "submerged_arc_wire",
+      "display_name": "埋弧焊丝",
+      "product_category": "submerged_arc_wire",
+      "description": "埋弧焊丝标准工艺流程：粗拔→细拔→镀铜→层绕→包装→出入库（与实心焊丝同链）",
+      "steps": [
+        {
+          "step_id": "rough_drawing",
+          "sort_order": 1
+        },
+        {
+          "step_id": "fine_drawing",
+          "sort_order": 2
+        },
+        {
+          "step_id": "copper_plating",
+          "sort_order": 3
+        },
+        {
+          "step_id": "winding",
+          "sort_order": 4
+        },
+        {
+          "step_id": "packaging",
+          "sort_order": 5
+        },
+        {
+          "step_id": "stock_in_out",
+          "sort_order": 6
+        }
+      ]
+    },
+    {
+      "template_id": "flux_core_wire",
+      "display_name": "药芯焊丝",
+      "product_category": "flux_core_wire",
+      "description": "药芯焊丝标准工艺流程：裁带→配粉→填充成型→粗拔→细拔→镀铜→层绕→包装→出入库",
+      "steps": [
+        {
+          "step_id": "cut_strip",
+          "sort_order": 1
+        },
+        {
+          "step_id": "powder_mixing",
+          "sort_order": 2
+        },
+        {
+          "step_id": "filling_forming",
+          "sort_order": 3
+        },
+        {
+          "step_id": "rough_drawing",
+          "sort_order": 4
+        },
+        {
+          "step_id": "fine_drawing",
+          "sort_order": 5
+        },
+        {
+          "step_id": "copper_plating",
+          "sort_order": 6
+        },
+        {
+          "step_id": "winding",
+          "sort_order": 7
+        },
+        {
+          "step_id": "packaging",
+          "sort_order": 8
+        },
+        {
+          "step_id": "stock_in_out",
+          "sort_order": 9
+        }
+      ]
+    }
+  ],
+  "kpi_definitions": [
+    {
+      "kpi_id": "rm",
+      "display_name": "抗拉强度(Rm)",
+      "description": "成品焊材抗拉强度，受拔丝张力与线径影响",
+      "unit": "MPa",
+      "related_field_ids": [
+        "tension_kN",
+        "outlet_diameter_um",
+        "strip_tension_N"
+      ],
+      "related_kpi_tag": "rm"
+    },
+    {
+      "kpi_id": "kv2",
+      "display_name": "冲击功(KV2)",
+      "description": "药芯焊丝低温冲击韧性，与填充率强相关",
+      "unit": "J",
+      "related_field_ids": [
+        "fill_ratio_pct",
+        "forming_pressure_MPa"
+      ],
+      "related_kpi_tag": "kv2"
+    },
+    {
+      "kpi_id": "corrosion_i_value",
+      "display_name": "耐蚀I值",
+      "description": "镀铜层耐蚀性能指标，由镀层厚度与镀液参数决定",
+      "unit": "",
+      "related_field_ids": [
+        "coating_thickness_top_um",
+        "coating_thickness_bottom_um",
+        "coating_thickness_left_um",
+        "coating_thickness_right_um",
+        "current_density_A_per_dm2",
+        "bath_temp_C",
+        "bath_ph"
+      ],
+      "related_kpi_tag": "corrosion_i_value"
+    },
+    {
+      "kpi_id": "first_pass_yield",
+      "display_name": "一次合格率",
+      "description": "批次首次检验合格率，关联关键工艺参数合规性",
+      "unit": "%",
+      "related_field_ids": [
+        "fill_ratio_pct",
+        "outlet_diameter_um",
+        "coating_thickness_top_um",
+        "coating_thickness_bottom_um",
+        "surface_defect",
+        "powder_leak_level",
+        "moisture_pct"
+      ],
+      "related_kpi_tag": "first_pass_yield"
+    },
+    {
+      "kpi_id": "oee",
+      "display_name": "设备综合效率(OEE)",
+      "description": "可用率×性能率×质量率，基于设备状态与产能数据",
+      "unit": "%",
+      "related_field_ids": [
+        "status",
+        "run_mode",
+        "alarm_code",
+        "line_speed_m_per_min",
+        "motor_rpm"
+      ],
+      "related_kpi_tag": "oee"
+    },
+    {
+      "kpi_id": "delivery_cycle",
+      "display_name": "交付周期",
+      "description": "从投产到成品入库的端到端周期",
+      "unit": "h",
+      "related_field_ids": [
+        "line_speed_m_per_min",
+        "package_count",
+        "quantity_kg",
+        "agv_id",
+        "to_location"
+      ],
+      "related_kpi_tag": "delivery_cycle"
+    }
+  ],
+  "equipment_types": [
+    {
+      "equipment_type": "wire_drawer",
+      "display_name": "拔丝机",
+      "default_step_id": "wire_drawing"
+    },
+    {
+      "equipment_type": "cutter",
+      "display_name": "切丝机",
+      "default_step_id": "cutting"
+    },
+    {
+      "equipment_type": "mixer",
+      "display_name": "搅拌机",
+      "default_step_id": "powder_mixing"
+    },
+    {
+      "equipment_type": "coater",
+      "display_name": "压涂机",
+      "default_step_id": "coating"
+    },
+    {
+      "equipment_type": "dryer",
+      "display_name": "烘干机",
+      "default_step_id": "drying"
+    },
+    {
+      "equipment_type": "strip_cutter",
+      "display_name": "裁带机",
+      "default_step_id": "cut_strip"
+    },
+    {
+      "equipment_type": "filler",
+      "display_name": "填充成型机",
+      "default_step_id": "filling_forming"
+    },
+    {
+      "equipment_type": "plater",
+      "display_name": "镀铜线",
+      "default_step_id": "copper_plating"
+    },
+    {
+      "equipment_type": "winder",
+      "display_name": "层绕机",
+      "default_step_id": "winding"
+    },
+    {
+      "equipment_type": "packager",
+      "display_name": "包装机",
+      "default_step_id": "packaging"
+    },
+    {
+      "equipment_type": "agv",
+      "display_name": "AGV小车",
+      "default_step_id": "stock_in_out"
+    }
+  ]
+}

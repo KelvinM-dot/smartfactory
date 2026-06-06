@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-b/form-config-model",
+  "title": "现场采集中台 · 表单配置模型",
+  "description": "通过配置定义调研模板、工序、观察字段；运行时记录引用 field_id，无需改代码即可应变",
+  "$defs": {
+    "ProcessStepId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "ObservationFieldId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "TemplateId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "InputType": {
+      "type": "string",
+      "enum": [
+        "text",
+        "number",
+        "boolean",
+        "enum",
+        "yes_no",
+        "yes_no_unknown",
+        "field_value",
+        "multi_enum",
+        "duration_min",
+        "datetime",
+        "composite",
+        "key_question",
+        "photo_ref",
+        "barcode"
+      ]
+    },
+    "ProcessStepDefinition": {
+      "type": "object",
+      "required": ["step_id", "display_name"],
+      "properties": {
+        "step_id": { "$ref": "#/$defs/ProcessStepId" },
+        "display_name": { "type": "string" },
+        "description": { "type": "string" },
+        "applicable_product_templates": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TemplateId" }
+        },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "ObservationFieldDefinition": {
+      "type": "object",
+      "required": ["field_id", "display_name", "input_type"],
+      "properties": {
+        "field_id": { "$ref": "#/$defs/ObservationFieldId" },
+        "display_name": { "type": "string" },
+        "description": { "type": "string" },
+        "input_type": { "$ref": "#/$defs/InputType" },
+        "unit": { "type": "string" },
+        "enum_options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["value", "label"],
+            "properties": {
+              "value": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        },
+        "composite_schema": {
+          "type": "object",
+          "description": "input_type=composite 时子字段定义",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "input_type": { "$ref": "#/$defs/InputType" },
+              "display_name": { "type": "string" }
+            }
+          }
+        },
+        "track_collectability": { "type": "boolean", "default": true },
+        "track_sample_source": { "type": "boolean", "default": true },
+        "default_value_priority": { "$ref": "enums.json#/$defs/ValuePriority" },
+        "default_kpi_tags": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/KpiTag" }
+        },
+        "maps_to_manufacturing_field_id": {
+          "type": "string",
+          "description": "可选：对应智造数据台 field_id，便于导出采集点清单"
+        },
+        "business_value": { "type": "string" },
+        "placeholder": { "type": "string" },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "StepFieldBinding": {
+      "type": "object",
+      "required": ["step_id", "field_id", "sort_order"],
+      "properties": {
+        "step_id": { "$ref": "#/$defs/ProcessStepId" },
+        "field_id": { "$ref": "#/$defs/ObservationFieldId" },
+        "sort_order": { "type": "integer" },
+        "required": { "type": "boolean", "default": false },
+        "display_name_override": { "type": "string" },
+        "value_priority_override": { "$ref": "enums.json#/$defs/ValuePriority" },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "KeyQuestionDefinition": {
+      "type": "object",
+      "required": ["question_id", "step_id", "question_text"],
+      "properties": {
+        "question_id": { "type": "string" },
+        "step_id": { "$ref": "#/$defs/ProcessStepId" },
+        "question_text": { "type": "string" },
+        "sort_order": { "type": "integer" },
+        "related_field_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ObservationFieldId" }
+        }
+      }
+    },
+    "CrossProcessFieldBinding": {
+      "type": "object",
+      "required": ["field_id", "sort_order"],
+      "properties": {
+        "field_id": { "$ref": "#/$defs/ObservationFieldId" },
+        "sort_order": { "type": "integer" },
+        "required": { "type": "boolean", "default": false }
+      }
+    },
+    "SurveyTemplate": {
+      "type": "object",
+      "required": ["template_id", "display_name", "product_template", "steps"],
+      "properties": {
+        "template_id": { "$ref": "#/$defs/TemplateId" },
+        "display_name": { "type": "string" },
+        "product_template": { "$ref": "enums.json#/$defs/ProductTemplate" },
+        "description": { "type": "string" },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["step_id", "sort_order"],
+            "properties": {
+              "step_id": { "$ref": "#/$defs/ProcessStepId" },
+              "sort_order": { "type": "integer" }
+            }
+          }
+        },
+        "cross_process_fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/CrossProcessFieldBinding" }
+        },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "InterviewQuestionDefinition": {
+      "type": "object",
+      "required": ["question_id", "category", "question_text"],
+      "properties": {
+        "question_id": { "type": "string" },
+        "category": { "$ref": "enums.json#/$defs/InterviewCategory" },
+        "question_text": { "type": "string" },
+        "hypothesis": { "type": "string" },
+        "expected_use": { "type": "string" },
+        "sort_order": { "type": "integer" },
+        "related_kpi_tags": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/KpiTag" }
+        }
+      }
+    },
+    "PriorityRankingOption": {
+      "type": "object",
+      "required": ["goal_id", "display_name"],
+      "properties": {
+        "goal_id": { "type": "string" },
+        "display_name": { "type": "string" },
+        "sort_hint": { "type": "integer" }
+      }
+    },
+    "SurveyDomainConfig": {
+      "type": "object",
+      "required": [
+        "config_id",
+        "config_version",
+        "process_steps",
+        "observation_fields",
+        "step_field_bindings",
+        "survey_templates",
+        "key_questions"
+      ],
+      "properties": {
+        "config_id": { "type": "string" },
+        "config_version": { "type": "string" },
+        "display_name": { "type": "string" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "process_steps": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ProcessStepDefinition" }
+        },
+        "observation_fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ObservationFieldDefinition" }
+        },
+        "step_field_bindings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/StepFieldBinding" }
+        },
+        "survey_templates": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/SurveyTemplate" }
+        },
+        "key_questions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/KeyQuestionDefinition" }
+        },
+        "cross_process_fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ObservationFieldDefinition" }
+        },
+        "cross_process_bindings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/CrossProcessFieldBinding" }
+        },
+        "interview_questions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/InterviewQuestionDefinition" }
+        },
+        "priority_ranking_options": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/PriorityRankingOption" }
+        }
+      }
+    }
+  }
+}

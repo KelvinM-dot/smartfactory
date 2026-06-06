@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/telemetry-record",
+  "title": "智造数据台 · 通用运行时数据记录",
+  "description": "所有工序遥测/快照均通过 field_id + values 表达，字段含义由 DomainConfig 配置决定",
+  "$defs": {
+    "RecordHeader": {
+      "type": "object",
+      "required": ["timestamp", "equipment_id", "process_step_id"],
+      "properties": {
+        "record_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "record_type": {
+          "type": "string",
+          "enum": ["telemetry_point", "process_snapshot", "batch_event", "equipment_status"]
+        },
+        "config_id": { "type": "string", "description": "引用的 DomainConfig.config_id" },
+        "template_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "equipment_id": { "type": "string" },
+        "process_step_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "product_batch": { "type": "string" },
+        "recipe_id": { "type": "string" },
+        "shift": { "$ref": "enums.json#/$defs/ShiftType" },
+        "product_category": { "$ref": "enums.json#/$defs/ProductCategory" }
+      }
+    },
+    "FieldValueMeta": {
+      "type": "object",
+      "properties": {
+        "data_source": { "$ref": "enums.json#/$defs/DataSourceType" },
+        "quality": { "$ref": "enums.json#/$defs/TelemetryQuality" },
+        "unit": { "type": "string" },
+        "sampled_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "TelemetryRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/RecordHeader" },
+        {
+          "type": "object",
+          "required": ["values"],
+          "properties": {
+            "record_type": { "const": "telemetry_point" },
+            "data_point_id": { "type": "string", "description": "单点模式时与 values 单键一致" },
+            "values": {
+              "type": "object",
+              "description": "field_id → 值；键必须存在于当前工序的 StepFieldBinding",
+              "additionalProperties": {
+                "oneOf": [
+                  { "type": "number" },
+                  { "type": "string" },
+                  { "type": "boolean" },
+                  { "type": "integer" },
+                  { "type": "array" },
+                  { "type": "object" }
+                ]
+              }
+            },
+            "value_meta": {
+              "type": "object",
+              "additionalProperties": { "$ref": "#/$defs/FieldValueMeta" }
+            }
+          }
+        }
+      ]
+    },
+    "ProcessSnapshot": {
+      "allOf": [
+        { "$ref": "#/$defs/RecordHeader" },
+        {
+          "type": "object",
+          "required": ["values"],
+          "properties": {
+            "record_type": { "const": "process_snapshot" },
+            "snapshot_interval_sec": { "type": "number" },
+            "values": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "value_meta": {
+              "type": "object",
+              "additionalProperties": { "$ref": "#/$defs/FieldValueMeta" }
+            }
+          }
+        }
+      ]
+    },
+    "EquipmentStatusRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/RecordHeader" },
+        {
+          "type": "object",
+          "required": ["values"],
+          "properties": {
+            "record_type": { "const": "equipment_status" },
+            "values": {
+              "type": "object",
+              "properties": {
+                "status": { "$ref": "enums.json#/$defs/EquipmentStatus" },
+                "run_mode": { "$ref": "enums.json#/$defs/RunMode" },
+                "motor_rpm": { "type": "number" },
+                "current_A": { "type": "number" },
+                "voltage_V": { "type": "number" },
+                "temperature_C": { "type": "number" },
+                "alarm_code": { "type": "string" },
+                "alarm_message": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      ]
+    },
+    "GenericTelemetryPoint": {
+      "description": "兼容单点直写模式，等价于 values 仅含一个键的 TelemetryRecord",
+      "type": "object",
+      "required": ["timestamp", "equipment_id", "data_point_id", "value"],
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "equipment_id": { "type": "string" },
+        "process_step_id": { "type": "string" },
+        "product_batch": { "type": "string" },
+        "data_point_id": { "type": "string" },
+        "value": true,
+        "unit": { "type": "string" },
+        "data_source": { "$ref": "enums.json#/$defs/DataSourceType" },
+        "quality": { "$ref": "enums.json#/$defs/TelemetryQuality" }
+      }
+    }
+  }
+}

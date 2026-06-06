@@ -1,0 +1,412 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/entities",
+  "title": "智造数据台 · 元数据实体",
+  "description": "设备、产线、数据点、批次、报警、用户等管理类实体定义",
+  "$defs": {
+    "Factory": {
+      "type": "object",
+      "required": ["factory_id", "name"],
+      "properties": {
+        "factory_id": { "type": "string", "examples": ["JQHC-PLANT-01"] },
+        "name": { "type": "string" },
+        "site_code": { "type": "string" },
+        "config_id": { "type": "string" },
+        "location": { "type": "string" },
+        "land_area_m2": { "type": "number" },
+        "building_area_m2": { "type": "number" },
+        "annual_capacity_t": { "type": "number" },
+        "remark": { "type": "string" }
+      }
+    },
+    "Workshop": {
+      "type": "object",
+      "required": ["workshop_id", "factory_id", "name"],
+      "properties": {
+        "workshop_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "name": { "type": "string" },
+        "workshop_type": { "type": "string", "enum": ["wire_shop", "rod_shop", "warehouse", "utility", "quality_lab", "packaging"] },
+        "area_m2": { "type": "number" },
+        "line_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "remark": { "type": "string" }
+      }
+    },
+    "Warehouse": {
+      "type": "object",
+      "required": ["warehouse_id", "factory_id", "name", "warehouse_type"],
+      "properties": {
+        "warehouse_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "name": { "type": "string" },
+        "warehouse_type": { "type": "string", "enum": ["raw", "wip", "finished", "auxiliary", "quality_hold"] },
+        "capacity_kg": { "type": "number" },
+        "location_code": { "type": "string" },
+        "remark": { "type": "string" }
+      }
+    },
+    "StorageLocation": {
+      "type": "object",
+      "required": ["location_id", "warehouse_id", "location_code"],
+      "properties": {
+        "location_id": { "type": "string" },
+        "warehouse_id": { "type": "string" },
+        "location_code": { "type": "string" },
+        "zone": { "type": "string" },
+        "bin_type": { "type": "string", "enum": ["rack", "floor", "line_side", "buffer", "staging"] },
+        "capacity_kg": { "type": "number" },
+        "allowed_material_classes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "ProductLine": {
+      "type": "object",
+      "required": ["product_line_id", "name", "product_category", "process_steps"],
+      "properties": {
+        "product_line_id": { "type": "string", "pattern": "^[A-Z0-9-]+$", "examples": ["FCW-LINE-07"] },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "name": { "type": "string" },
+        "product_category": { "$ref": "enums.json#/$defs/ProductCategory" },
+        "design_capacity_t_per_year": { "type": "number" },
+        "design_capacity_t_per_day": { "type": "number" },
+        "planned_shift_pattern": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/ShiftType" }
+        },
+        "process_steps": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/ProcessStepId" }
+        },
+        "template_id": { "type": "string", "description": "引用的 ProductTemplate.template_id" },
+        "config_id": { "type": "string", "description": "引用的 DomainConfig.config_id" },
+        "status": { "type": "string", "enum": ["active", "inactive", "maintenance"] },
+        "remark": { "type": "string" }
+      }
+    },
+    "Equipment": {
+      "type": "object",
+      "required": ["equipment_id", "name", "product_line_id", "process_step_id"],
+      "properties": {
+        "equipment_id": { "type": "string", "pattern": "^[A-Z0-9-]+$", "examples": ["PLATING-02"] },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "name": { "type": "string" },
+        "equipment_type": { "type": "string", "examples": ["plating_line", "mixer", "agv"] },
+        "product_line_id": { "type": "string" },
+        "process_step_id": { "$ref": "enums.json#/$defs/ProcessStepId" },
+        "rated_capacity_per_hour": { "type": "number" },
+        "capacity_unit": { "type": "string", "enum": ["kg/h", "t/h", "piece/min", "spool/h"] },
+        "energy_meter_id": { "type": "string" },
+        "manufacturer": { "type": "string", "description": "自研设备可填 internal" },
+        "protocol": { "$ref": "enums.json#/$defs/ProtocolType" },
+        "connection": {
+          "type": "object",
+          "properties": {
+            "host": { "type": "string" },
+            "port": { "type": "integer" },
+            "serial_port": { "type": "string" },
+            "opc_ua_endpoint": { "type": "string" },
+            "slave_id": { "type": "integer" }
+          }
+        },
+        "enabled": { "type": "boolean", "default": true },
+        "remark": { "type": "string" }
+      }
+    },
+    "AgvVehicle": {
+      "type": "object",
+      "required": ["agv_id", "factory_id", "name"],
+      "properties": {
+        "agv_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "name": { "type": "string" },
+        "vehicle_type": { "type": "string", "enum": ["fork_agv", "latent_agv", "tugger_agv"] },
+        "payload_capacity_kg": { "type": "number" },
+        "speed_m_per_sec": { "type": "number" },
+        "current_location_id": { "type": "string" },
+        "status": { "type": "string", "enum": ["idle", "assigned", "moving", "charging", "fault", "maintenance"] },
+        "battery_soc_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "DataPoint": {
+      "type": "object",
+      "required": [
+        "data_point_id",
+        "equipment_id",
+        "display_name",
+        "data_category",
+        "data_type",
+        "process_step_id"
+      ],
+      "properties": {
+        "data_point_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "examples": ["coating_thickness_top_um"]
+        },
+        "equipment_id": { "type": "string" },
+        "display_name": { "type": "string", "examples": ["镀层厚度(上)"] },
+        "data_category": { "$ref": "enums.json#/$defs/DataCategory" },
+        "data_type": { "$ref": "enums.json#/$defs/DataType" },
+        "unit": { "type": "string", "examples": ["μm", "kN", "°C", "kg/h"] },
+        "process_step_id": { "$ref": "enums.json#/$defs/ProcessStepId" },
+        "sampling_method": { "$ref": "enums.json#/$defs/SamplingMethod" },
+        "sampling_freq_hz": { "type": "number", "minimum": 0 },
+        "sampling_trigger": {
+          "type": "string",
+          "enum": ["periodic", "on_change", "on_batch_start", "on_event"],
+          "default": "periodic"
+        },
+        "protocol_address": { "type": "string", "description": "Modbus 寄存器或 OPC UA NodeId", "examples": ["40001", "ns=2;s=outlet_diameter_um"] },
+        "modbus_config": {
+          "type": "object",
+          "properties": {
+            "function_code": { "type": "integer", "enum": [1, 2, 3, 4] },
+            "register_address": { "type": "string" },
+            "data_format": { "type": "string", "enum": ["int16", "uint16", "int32", "float32", "float64", "boolean"] },
+            "byte_order": { "type": "string", "enum": ["ABCD", "CDAB", "BADC", "DCBA"] },
+            "scale_factor": { "type": "number", "default": 1 },
+            "offset": { "type": "number", "default": 0 }
+          }
+        },
+        "priority": { "$ref": "enums.json#/$defs/DataPointPriority" },
+        "mandatory_flag": { "$ref": "enums.json#/$defs/MandatoryFlag" },
+        "business_value": { "type": "string" },
+        "kpi_tags": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/KpiTag" }
+        },
+        "spec_limits": {
+          "type": "object",
+          "properties": {
+            "lsl": { "type": "number", "description": "下规格限" },
+            "usl": { "type": "number", "description": "上规格限" },
+            "target": { "type": "number" }
+          }
+        },
+        "enabled": { "type": "boolean", "default": true },
+        "remark": { "type": "string" }
+      }
+    },
+    "DataDictionaryEntry": {
+      "type": "object",
+      "required": ["field_id", "display_name", "data_type"],
+      "properties": {
+        "field_id": { "type": "string" },
+        "display_name": { "type": "string" },
+        "data_type": { "$ref": "enums.json#/$defs/DataType" },
+        "unit": { "type": "string" },
+        "description": { "type": "string" },
+        "sampling_logic": { "type": "string" },
+        "related_kpi": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/KpiTag" }
+        }
+      }
+    },
+    "GatewayConfig": {
+      "type": "object",
+      "required": ["gateway_id", "product_line_id"],
+      "properties": {
+        "gateway_id": { "type": "string" },
+        "name": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "host": { "type": "string" },
+        "opc_ua_endpoint": { "type": "string" },
+        "equipment_mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["equipment_id", "protocol"],
+            "properties": {
+              "equipment_id": { "type": "string" },
+              "protocol": { "$ref": "enums.json#/$defs/ProtocolType" },
+              "target_host": { "type": "string" },
+              "target_port": { "type": "integer" }
+            }
+          }
+        },
+        "data_point_mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["data_point_id", "protocol_address"],
+            "properties": {
+              "data_point_id": { "type": "string" },
+              "protocol_address": { "type": "string" },
+              "opc_ua_node_id": { "type": "string" }
+            }
+          }
+        },
+        "enabled": { "type": "boolean" }
+      }
+    },
+    "ProductBatch": {
+      "type": "object",
+      "required": ["batch_id", "product_line_id", "product_category", "status"],
+      "properties": {
+        "batch_id": { "type": "string", "examples": ["FCW-20260605-B2"] },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "production_order_id": { "type": "string" },
+        "product_category": { "$ref": "enums.json#/$defs/ProductCategory" },
+        "recipe_id": { "type": "string", "examples": ["FCW-HY830-V3"] },
+        "grade": { "type": "string", "examples": ["HY-830MPa"] },
+        "planned_grade": { "type": "string" },
+        "shift": { "$ref": "enums.json#/$defs/ShiftType" },
+        "status": { "$ref": "enums.json#/$defs/BatchStatus" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "ended_at": { "type": "string", "format": "date-time" },
+        "parent_batches": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "上游原料/半成品批次"
+        },
+        "child_batches": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "quantity_kg": { "type": "number" },
+        "quality_result": {
+          "type": "object",
+          "properties": {
+            "rm_mpa": { "type": "number" },
+            "kv2_j": { "type": "number" },
+            "elongation_a_pct": { "type": "number" },
+            "corrosion_i_value": { "type": "number" },
+            "first_pass": { "type": "boolean" }
+          }
+        },
+        "remark": { "type": "string" }
+      }
+    },
+    "ProductionOrder": {
+      "type": "object",
+      "required": ["production_order_id", "factory_id", "product_category", "planned_quantity_t", "due_date"],
+      "properties": {
+        "production_order_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "customer_order_id": { "type": "string" },
+        "product_category": { "$ref": "enums.json#/$defs/ProductCategory" },
+        "grade": { "type": "string" },
+        "recipe_id": { "type": "string" },
+        "assigned_line_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "priority": { "type": "string", "enum": ["urgent", "high", "normal", "low"] },
+        "planned_quantity_t": { "type": "number" },
+        "released_quantity_t": { "type": "number" },
+        "due_date": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["planned", "released", "in_process", "completed", "cancelled"] },
+        "remark": { "type": "string" }
+      }
+    },
+    "ShiftCalendar": {
+      "type": "object",
+      "required": ["shift_id", "factory_id", "shift_type", "start_time", "end_time"],
+      "properties": {
+        "shift_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "shift_type": { "$ref": "enums.json#/$defs/ShiftType" },
+        "start_time": { "type": "string", "format": "date-time" },
+        "end_time": { "type": "string", "format": "date-time" },
+        "planned_headcount": { "type": "integer" },
+        "actual_headcount": { "type": "integer" },
+        "remark": { "type": "string" }
+      }
+    },
+    "AlarmDictionaryEntry": {
+      "type": "object",
+      "required": ["alarm_code", "equipment_type", "message"],
+      "properties": {
+        "alarm_code": { "type": "string", "examples": ["E101"] },
+        "equipment_type": { "type": "string" },
+        "message": { "type": "string", "examples": ["断丝"] },
+        "severity": { "$ref": "enums.json#/$defs/AlarmSeverity" },
+        "suggested_action": { "type": "string" }
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": ["user_id", "display_name", "roles"],
+      "properties": {
+        "user_id": { "type": "string" },
+        "display_name": { "type": "string" },
+        "roles": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/UserRole" }
+        },
+        "department": { "type": "string" },
+        "enabled": { "type": "boolean" }
+      }
+    },
+    "EnergyAsset": {
+      "type": "object",
+      "required": ["asset_id", "factory_id", "asset_type", "name"],
+      "properties": {
+        "asset_id": { "type": "string" },
+        "factory_id": { "type": "string" },
+        "workshop_id": { "type": "string" },
+        "asset_type": { "type": "string", "enum": ["pv", "wind", "grid", "waste_heat", "storage", "transformer", "meter"] },
+        "name": { "type": "string" },
+        "rated_power_kw": { "type": "number" },
+        "capacity_kwh": { "type": "number" },
+        "serving_scope": { "type": "string", "enum": ["factory", "workshop", "line", "equipment"] },
+        "serving_ref_id": { "type": "string" },
+        "enabled": { "type": "boolean", "default": true },
+        "remark": { "type": "string" }
+      }
+    },
+    "DashboardPanel": {
+      "type": "object",
+      "required": ["panel_id", "panel_type", "title"],
+      "properties": {
+        "panel_id": { "type": "string" },
+        "panel_type": {
+          "type": "string",
+          "enum": ["trend", "gauge", "status_bar", "alarm_list", "oee_summary", "batch_timeline", "kpi_card"]
+        },
+        "title": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "data_point_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "time_range": {
+          "type": "string",
+          "enum": ["realtime", "shift", "batch", "last_24h", "custom"]
+        },
+        "refresh_interval_sec": { "type": "integer" }
+      }
+    },
+    "Dashboard": {
+      "type": "object",
+      "required": ["dashboard_id", "name", "panels"],
+      "properties": {
+        "dashboard_id": { "type": "string" },
+        "name": { "type": "string" },
+        "target_role": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/UserRole" }
+        },
+        "panels": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DashboardPanel" }
+        }
+      }
+    }
+  }
+}

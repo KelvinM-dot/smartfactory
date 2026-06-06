@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-b/reports-export",
+  "title": "现场采集中台 · 报告与导出",
+  "$defs": {
+    "DataStatusReport": {
+      "type": "object",
+      "required": ["report_id", "task_id", "generated_at", "product_line_id"],
+      "properties": {
+        "report_id": { "type": "string" },
+        "task_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "generated_by": { "type": "string" },
+        "product_line_id": { "type": "string" },
+        "product_template": { "$ref": "enums.json#/$defs/ProductTemplate" },
+        "collectable_points_summary": {
+          "type": "object",
+          "properties": {
+            "plc_available_count": { "type": "integer" },
+            "hmi_only_count": { "type": "integer" },
+            "needs_sensor_count": { "type": "integer" },
+            "manual_only_count": { "type": "integer" }
+          }
+        },
+        "manual_record_pain_points": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "traceability_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "process_step_id": { "type": "string" },
+              "gap_description": { "type": "string" },
+              "severity": { "$ref": "enums.json#/$defs/ImpactLevel" }
+            }
+          }
+        },
+        "process_observations": {
+          "type": "array",
+          "items": { "type": "string", "description": "observation_id 列表" }
+        },
+        "high_value_points": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "conclusion": { "type": "string" }
+      }
+    },
+    "PilotScopeProposal": {
+      "type": "object",
+      "required": ["proposal_id", "task_id", "generated_at"],
+      "properties": {
+        "proposal_id": { "type": "string" },
+        "task_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "recommended_product_line_id": { "type": "string" },
+        "covered_process_steps": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/ProcessStep" }
+        },
+        "hardware_additions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item": { "type": "string" },
+              "process_step_id": { "type": "string" },
+              "estimated_cost_cny": { "type": "number" },
+              "purpose": { "type": "string" }
+            }
+          }
+        },
+        "expected_kpi_improvements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kpi": { "type": "string" },
+              "baseline_note": { "type": "string" },
+              "target_note": { "type": "string" }
+            }
+          }
+        },
+        "risks": { "type": "array", "items": { "type": "string" } },
+        "assumptions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "AcquisitionPointExport": {
+      "type": "object",
+      "required": ["export_id", "task_id", "generated_at", "points"],
+      "properties": {
+        "export_id": { "type": "string" },
+        "task_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "product_template": { "$ref": "enums.json#/$defs/ProductTemplate" },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["process_step_id", "data_point_name", "data_point_id_suggestion"],
+            "properties": {
+              "process_step_id": { "type": "string" },
+              "equipment_id_suggestion": { "type": "string" },
+              "data_point_name": { "type": "string" },
+              "data_point_id_suggestion": { "type": "string" },
+              "data_type": { "type": "string" },
+              "unit": { "type": "string" },
+              "collectability": { "$ref": "enums.json#/$defs/Collectability" },
+              "recommended_method": { "$ref": "enums.json#/$defs/RecommendedCollection" },
+              "sampling_freq_hz": { "type": "number" },
+              "business_value": { "type": "string" },
+              "mandatory_flag": { "type": "string", "enum": ["Y", "N"] },
+              "priority": { "$ref": "enums.json#/$defs/ValuePriority" },
+              "kpi_tags": {
+                "type": "array",
+                "items": { "$ref": "enums.json#/$defs/KpiTag" }
+              },
+              "protocol_address": { "type": "string", "description": "蹲点确认后填写，可为空" },
+              "remark": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "ExecutiveInterview": {
+      "type": "object",
+      "required": ["interview_id", "interview_date", "interviewer"],
+      "properties": {
+        "interview_id": { "type": "string" },
+        "interview_date": { "type": "string", "format": "date" },
+        "interviewee_title": { "type": "string", "default": "总经理" },
+        "interviewer": { "type": "string" },
+        "duration_min": { "type": "integer" },
+        "related_task_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "answers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/InterviewAnswer" }
+        },
+        "priority_ranking": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "goal": { "type": "string" },
+              "rank": { "type": "integer", "minimum": 1, "maximum": 5 }
+            }
+          },
+          "description": "总经理对建设目标的重要性排序"
+        },
+        "nonverbal_signals": { "type": "string" },
+        "summary": { "type": "string" }
+      }
+    },
+    "InterviewAnswer": {
+      "type": "object",
+      "required": ["question_id", "category", "question_text"],
+      "properties": {
+        "question_id": { "type": "string", "examples": ["1.1", "2.3", "3.1"] },
+        "category": { "$ref": "enums.json#/$defs/InterviewCategory" },
+        "question_text": { "type": "string" },
+        "hypothesis": { "type": "string" },
+        "answer_text": { "type": "string" },
+        "answer_kpi_implication": { "type": "string" },
+        "follow_up_needed": { "type": "boolean" }
+      }
+    },
+    "ExportPackage": {
+      "type": "object",
+      "required": ["package_id", "task_id", "generated_at", "format"],
+      "properties": {
+        "package_id": { "type": "string" },
+        "task_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "format": { "$ref": "enums.json#/$defs/ExportFormat" },
+        "includes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "survey_task",
+              "process_observations",
+              "sample_data",
+              "high_value_points",
+              "priority_matrix",
+              "daily_summaries",
+              "data_status_report",
+              "pilot_scope_proposal",
+              "acquisition_point_export",
+              "executive_interview",
+              "photos_metadata"
+            ]
+          }
+        },
+        "file_uri": { "type": "string" }
+      }
+    }
+  }
+}

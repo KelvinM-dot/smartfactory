@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/config-model",
+  "title": "智造数据台 · 领域配置模型",
+  "description": "通过配置定义工序、字段、产品模板；运行时数据引用 config 中的 ID，无需改代码即可应变",
+  "$defs": {
+    "ProcessStepId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "工序唯一标识，可扩展"
+    },
+    "FieldId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "字段/数据点唯一标识"
+    },
+    "TemplateId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "ValueConstraint": {
+      "type": "object",
+      "properties": {
+        "enum_values": { "type": "array", "items": { "type": "string" } },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "pattern": { "type": "string" },
+        "item_schema": {
+          "type": "object",
+          "description": "array/object 类型时子项结构说明",
+          "additionalProperties": true
+        }
+      }
+    },
+    "ProcessStepDefinition": {
+      "type": "object",
+      "required": ["step_id", "display_name", "sort_hint"],
+      "properties": {
+        "step_id": { "$ref": "#/$defs/ProcessStepId" },
+        "display_name": { "type": "string" },
+        "description": { "type": "string" },
+        "sort_hint": { "type": "integer", "description": "全局排序参考，非强制" },
+        "applicable_product_categories": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/ProductCategory" }
+        },
+        "default_equipment_types": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "FieldDefinition": {
+      "type": "object",
+      "required": ["field_id", "display_name", "data_type", "data_category"],
+      "properties": {
+        "field_id": { "$ref": "#/$defs/FieldId" },
+        "display_name": { "type": "string" },
+        "description": { "type": "string" },
+        "data_type": { "$ref": "enums.json#/$defs/DataType" },
+        "data_category": { "$ref": "enums.json#/$defs/DataCategory" },
+        "unit": { "type": "string" },
+        "value_constraint": { "$ref": "#/$defs/ValueConstraint" },
+        "default_sampling_method": { "$ref": "enums.json#/$defs/SamplingMethod" },
+        "default_sampling_freq_hz": { "type": "number" },
+        "default_sampling_trigger": {
+          "type": "string",
+          "enum": ["periodic", "on_change", "on_batch_start", "on_event"]
+        },
+        "default_priority": { "$ref": "enums.json#/$defs/DataPointPriority" },
+        "default_mandatory": { "$ref": "enums.json#/$defs/MandatoryFlag" },
+        "kpi_tags": {
+          "type": "array",
+          "items": { "$ref": "enums.json#/$defs/KpiTag" }
+        },
+        "business_value": { "type": "string" },
+        "default_spec_limits": {
+          "type": "object",
+          "properties": {
+            "lsl": { "type": "number" },
+            "usl": { "type": "number" },
+            "target": { "type": "number" }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "如 recommended_sensor, batch_key, traceability_key"
+        },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "StepFieldBinding": {
+      "type": "object",
+      "required": ["step_id", "field_id", "sort_order"],
+      "properties": {
+        "step_id": { "$ref": "#/$defs/ProcessStepId" },
+        "field_id": { "$ref": "#/$defs/FieldId" },
+        "sort_order": { "type": "integer" },
+        "required": { "type": "boolean", "default": false },
+        "display_name_override": { "type": "string" },
+        "mandatory_override": { "$ref": "enums.json#/$defs/MandatoryFlag" },
+        "priority_override": { "$ref": "enums.json#/$defs/DataPointPriority" },
+        "spec_limits_override": {
+          "type": "object",
+          "properties": {
+            "lsl": { "type": "number" },
+            "usl": { "type": "number" },
+            "target": { "type": "number" }
+          }
+        },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "ProductTemplateStep": {
+      "type": "object",
+      "required": ["step_id", "sort_order"],
+      "properties": {
+        "step_id": { "$ref": "#/$defs/ProcessStepId" },
+        "sort_order": { "type": "integer" },
+        "optional": { "type": "boolean", "default": false },
+        "parallel_group": { "type": "string", "description": "同组工序可并行采集" }
+      }
+    },
+    "ProductTemplate": {
+      "type": "object",
+      "required": ["template_id", "display_name", "product_category", "steps"],
+      "properties": {
+        "template_id": { "$ref": "#/$defs/TemplateId" },
+        "display_name": { "type": "string" },
+        "product_category": { "$ref": "enums.json#/$defs/ProductCategory" },
+        "description": { "type": "string" },
+        "steps": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ProductTemplateStep" },
+          "minItems": 1
+        },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    },
+    "KpiDefinition": {
+      "type": "object",
+      "required": ["kpi_id", "display_name"],
+      "properties": {
+        "kpi_id": { "type": "string" },
+        "display_name": { "type": "string" },
+        "description": { "type": "string" },
+        "unit": { "type": "string" },
+        "related_field_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/FieldId" }
+        },
+        "related_kpi_tag": { "$ref": "enums.json#/$defs/KpiTag" }
+      }
+    },
+    "EquipmentTypeDefinition": {
+      "type": "object",
+      "required": ["equipment_type", "display_name"],
+      "properties": {
+        "equipment_type": { "type": "string" },
+        "display_name": { "type": "string" },
+        "default_step_id": { "$ref": "#/$defs/ProcessStepId" }
+      }
+    },
+    "DomainConfig": {
+      "type": "object",
+      "required": ["config_id", "config_version", "process_steps", "fields", "step_field_bindings", "product_templates"],
+      "properties": {
+        "config_id": { "type": "string" },
+        "config_version": { "type": "string" },
+        "display_name": { "type": "string" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "process_steps": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ProcessStepDefinition" }
+        },
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/FieldDefinition" }
+        },
+        "step_field_bindings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/StepFieldBinding" }
+        },
+        "product_templates": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ProductTemplate" }
+        },
+        "kpi_definitions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/KpiDefinition" }
+        },
+        "equipment_types": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/EquipmentTypeDefinition" }
+        }
+      }
+    }
+  }
+}

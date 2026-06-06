@@ -1,0 +1,40 @@
+server:
+  port: 3001
+  address: 0.0.0.0
+
+spring:
+  application:
+    name: dataplatform-api
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.community.dialect.SQLiteDialect
+        jdbc:
+          time_zone: UTC
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+jqhc:
+  domain-config-path: ../schemas/智造数据台/presets/jqhc-manufacturing-config.json
+  master-data-path: ../schemas/智造数据台/presets/jqhc-factory-master-data.json
+  sqlite-database-path: ./data/jqhc_dataplatform.db
+  # false：由模拟器 RESET_DB_BEFORE_START 触发 reseed，避免 API/模拟器双端竞态清库
+  reset-db-on-startup: false
+  buffer-window-hours: 2
+  telemetry-cleanup-interval-ms: 60000
+  event-cleanup-interval-ms: 300000
+  material-event-retention-hours: 72
+  quality-gate-retention-hours: 72
+  completed-logistics-retention-hours: 24
+  resolved-alarm-retention-hours: 168
+  heartbeat-timeout-sec: 30
+  simulator-url: http://127.0.0.1:3002
+
+logging:
+  level:
+    com.jqhc: INFO

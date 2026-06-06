@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-a/enums",
+  "title": "智造数据台 · 枚举定义",
+  "description": "产品 A 全局枚举，供各实体 schema 引用",
+  "$defs": {
+    "ProductCategory": {
+      "type": "string",
+      "enum": ["welding_rod", "solid_wire", "flux_core_wire"],
+      "description": "产品大类：焊条 / 实心焊丝 / 药芯焊丝"
+    },
+    "ProcessStepId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "工序 ID，由 DomainConfig.process_steps 配置，可扩展"
+    },
+    "DataCategory": {
+      "type": "string",
+      "enum": ["equipment_status", "process_parameter", "material_flow"]
+    },
+    "DataType": {
+      "type": "string",
+      "enum": ["boolean", "integer", "float", "string", "datetime", "array", "object"]
+    },
+    "EquipmentStatus": {
+      "type": "string",
+      "enum": ["RUNNING", "STOPPED", "ALARM", "MANUAL", "MAINTENANCE", "UNKNOWN"]
+    },
+    "RunMode": {
+      "type": "string",
+      "enum": ["auto", "manual", "stopped"]
+    },
+    "ProtocolType": {
+      "type": "string",
+      "enum": ["modbus_tcp", "modbus_rtu", "opc_ua", "mqtt", "http", "none"]
+    },
+    "SamplingMethod": {
+      "type": "string",
+      "enum": [
+        "plc_register",
+        "opc_ua_node",
+        "laser_sensor",
+        "xrf_sensor",
+        "weighing_module",
+        "manual_entry",
+        "calculated"
+      ]
+    },
+    "DataPointPriority": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"]
+    },
+    "MandatoryFlag": {
+      "type": "string",
+      "enum": ["Y", "N"]
+    },
+    "KpiTag": {
+      "type": "string",
+      "enum": [
+        "quality",
+        "first_pass_yield",
+        "rm",
+        "kv2",
+        "elongation_a",
+        "corrosion_i_value",
+        "delivery_cycle",
+        "oee",
+        "downtime",
+        "energy",
+        "carbon_footprint",
+        "traceability",
+        "compliance"
+      ]
+    },
+    "MaterialEventType": {
+      "type": "string",
+      "enum": [
+        "LINE_ON",
+        "LINE_OFF",
+        "STOCK_IN",
+        "STOCK_OUT",
+        "TRANSFER",
+        "AGV_DISPATCH",
+        "AGV_ARRIVE",
+        "BATCH_CREATE",
+        "BATCH_CLOSE"
+      ]
+    },
+    "AlarmSeverity": {
+      "type": "string",
+      "enum": ["critical", "major", "minor", "info"]
+    },
+    "AlarmHandleStatus": {
+      "type": "string",
+      "enum": ["open", "acknowledged", "resolved", "ignored"]
+    },
+    "TelemetryQuality": {
+      "type": "string",
+      "enum": ["good", "bad", "uncertain", "substituted"]
+    },
+    "DataSourceType": {
+      "type": "string",
+      "enum": ["plc", "sensor", "gateway", "manual", "calculated", "imported"]
+    },
+    "ShiftType": {
+      "type": "string",
+      "enum": ["day", "night", "middle"]
+    },
+    "BatchStatus": {
+      "type": "string",
+      "enum": ["planned", "in_progress", "completed", "hold", "scrapped"]
+    },
+    "SpcRule": {
+      "type": "string",
+      "enum": [
+        "beyond_3sigma",
+        "same_side_9",
+        "trending_6",
+        "alternating_14",
+        "beyond_2of3_2sigma",
+        "beyond_4of5_1sigma"
+      ]
+    },
+    "DataQualityIssueType": {
+      "type": "string",
+      "enum": [
+        "stream_gap",
+        "out_of_range",
+        "clock_skew",
+        "duplicate",
+        "stale_value",
+        "missing_batch_tag"
+      ]
+    },
+    "UserRole": {
+      "type": "string",
+      "enum": ["admin", "data_engineer", "process_engineer", "quality_engineer", "shift_leader", "executive", "viewer"]
+    },
+    "StorageTier": {
+      "type": "string",
+      "enum": ["hot", "warm", "cold"]
+    }
+  }
+}

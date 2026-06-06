@@ -1,0 +1,2844 @@
+{
+  "config_id": "jqhc-survey",
+  "config_version": "1.0.0",
+  "display_name": "金桥焊材 · 蹲点调研默认配置",
+  "updated_at": "2026-06-05T08:12:50Z",
+  "process_steps": [
+    {
+      "step_id": "cut_strip",
+      "display_name": "裁带",
+      "description": "钢带开卷、张力控制与定长裁切，为药芯焊丝填充提供钢带基材",
+      "applicable_product_templates": [
+        "flux_core_wire"
+      ]
+    },
+    {
+      "step_id": "powder_mixing",
+      "display_name": "配粉搅拌",
+      "description": "按配方称量、搅拌药粉，记录批次与偏差",
+      "applicable_product_templates": [
+        "flux_core_wire",
+        "welding_rod"
+      ]
+    },
+    {
+      "step_id": "filling_forming",
+      "display_name": "填充成型",
+      "description": "药粉填充、钢带合缝成型，药芯焊丝核心质量工序",
+      "applicable_product_templates": [
+        "flux_core_wire"
+      ]
+    },
+    {
+      "step_id": "drawing",
+      "display_name": "拉拔",
+      "description": "药芯焊丝拉拔减径，监控拉拔力与表面质量 [已拆分为 rough_drawing + fine_drawing]",
+      "applicable_product_templates": [
+        "flux_core_wire"
+      ],
+      "enabled": false
+    },
+    {
+      "step_id": "copper_plating",
+      "display_name": "镀铜",
+      "description": "电解镀铜，控制镀液参数与镀层厚度",
+      "applicable_product_templates": [
+        "flux_core_wire",
+        "solid_wire"
+      ]
+    },
+    {
+      "step_id": "winding_packaging",
+      "display_name": "层绕包装入库",
+      "description": "成品层绕、贴标、AGV入库与库存登记",
+      "applicable_product_templates": [
+        "flux_core_wire",
+        "welding_rod"
+      ]
+    },
+    {
+      "step_id": "wire_drawing",
+      "display_name": "拔丝",
+      "description": "焊条钢芯拔丝，控制线径与张力",
+      "applicable_product_templates": [
+        "welding_rod"
+      ]
+    },
+    {
+      "step_id": "cutting",
+      "display_name": "切丝",
+      "description": "焊条钢芯定长切割",
+      "applicable_product_templates": [
+        "welding_rod"
+      ]
+    },
+    {
+      "step_id": "coating",
+      "display_name": "压涂",
+      "description": "焊条药皮压涂成型",
+      "applicable_product_templates": [
+        "welding_rod"
+      ]
+    },
+    {
+      "step_id": "drying",
+      "display_name": "烘干",
+      "description": "焊条药皮烘干脱水",
+      "applicable_product_templates": [
+        "welding_rod"
+      ]
+    },
+    {
+      "step_id": "rough_drawing",
+      "display_name": "粗拔",
+      "description": "实心焊丝粗拔减径",
+      "applicable_product_templates": [
+        "solid_wire",
+        "flux_core_wire"
+      ]
+    },
+    {
+      "step_id": "fine_drawing",
+      "display_name": "细拔",
+      "description": "实心焊丝精拔至成品线径",
+      "applicable_product_templates": [
+        "solid_wire",
+        "flux_core_wire"
+      ]
+    },
+    {
+      "step_id": "winding",
+      "display_name": "层绕",
+      "description": "焊丝成品层绕收线",
+      "applicable_product_templates": [
+        "solid_wire"
+      ]
+    },
+    {
+      "step_id": "packaging",
+      "display_name": "包装",
+      "description": "成品包装贴标",
+      "applicable_product_templates": [
+        "solid_wire"
+      ]
+    },
+    {
+      "step_id": "cross_process",
+      "display_name": "跨工序全局",
+      "description": "计划执行、异常响应、交接班、能耗等跨工序观察",
+      "applicable_product_templates": [
+        "flux_core_wire",
+        "welding_rod",
+        "solid_wire"
+      ]
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "display_name": "包装入库",
+      "description": "焊条等产品的成品包装、贴标、AGV入库与库存登记（不含层绕）",
+      "applicable_product_templates": [
+        "welding_rod"
+      ]
+    }
+  ],
+  "observation_fields": [
+    {
+      "field_id": "strip_batch_id",
+      "display_name": "钢带原料批次号",
+      "input_type": "barcode",
+      "track_collectability": true,
+      "business_value": "钢带原料全链路追溯起点",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "strip_batch_id",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "strip_thickness_mm",
+      "display_name": "钢带厚度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "厚度偏差影响后续填充合缝质量",
+      "unit": "mm",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "strip_thickness_mm",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "uncoil_tension_N",
+      "display_name": "开卷张力",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "张力稳定性影响裁带与填充",
+      "unit": "N",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "uncoil_tension_N",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "cut_length_mm",
+      "display_name": "切割长度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "定长规格合规",
+      "unit": "mm",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "cut_length_mm",
+      "default_kpi_tags": [
+        "quality",
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "line_speed",
+      "display_name": "线速度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "产线节拍监控（裁带/拔丝/层绕）",
+      "unit": "m/min",
+      "default_value_priority": "green",
+      "maps_to_manufacturing_field_id": "line_speed_m_per_min"
+    },
+    {
+      "field_id": "manual_tension_adjustment",
+      "display_name": "人工调张力",
+      "input_type": "composite",
+      "track_collectability": true,
+      "business_value": "人工干预频次反映自动化水平",
+      "composite_schema": {
+        "occurs": {
+          "input_type": "yes_no_unknown",
+          "display_name": "是否发生"
+        },
+        "frequency": {
+          "input_type": "text",
+          "display_name": "频次描述"
+        }
+      }
+    },
+    {
+      "field_id": "abnormal_strip_runoff",
+      "display_name": "异常：钢带跑偏",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "跑偏导致停机与质量风险"
+    },
+    {
+      "field_id": "abnormal_strip_break",
+      "display_name": "异常：断带",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "断带影响连续生产与追溯"
+    },
+    {
+      "field_id": "abnormal_time",
+      "display_name": "异常发生时间",
+      "input_type": "datetime",
+      "track_collectability": true,
+      "business_value": "异常事件时间定位"
+    },
+    {
+      "field_id": "abnormal_handling",
+      "display_name": "异常处理方式",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "异常响应流程记录"
+    },
+    {
+      "field_id": "sensor_needed",
+      "display_name": "需新增传感器",
+      "input_type": "multi_enum",
+      "track_collectability": true,
+      "business_value": "采集能力缺口识别",
+      "enum_options": [
+        {
+          "value": "laser_width_gauge",
+          "label": "激光测宽仪"
+        },
+        {
+          "value": "laser_diameter_gauge",
+          "label": "激光测径仪"
+        },
+        {
+          "value": "tension_sensor",
+          "label": "张力传感器"
+        },
+        {
+          "value": "none",
+          "label": "无需新增"
+        }
+      ]
+    },
+    {
+      "field_id": "cut_length_setting_mode",
+      "display_name": "切割长度设定方式",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "工艺参数设定模式",
+      "enum_options": [
+        {
+          "value": "auto",
+          "label": "自动设定"
+        },
+        {
+          "value": "manual",
+          "label": "手动调整"
+        },
+        {
+          "value": "mixed",
+          "label": "混合"
+        }
+      ]
+    },
+    {
+      "field_id": "strip_batch_scannable",
+      "display_name": "批次号可扫码",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "追溯数据采集便利性"
+    },
+    {
+      "field_id": "recipe_id",
+      "display_name": "配方ID",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "配方追溯与多标准管理",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "recipe_id",
+      "default_kpi_tags": [
+        "traceability",
+        "knowledge_capture"
+      ]
+    },
+    {
+      "field_id": "ingredient_batch_ids",
+      "display_name": "各原料批次号",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "原料批次全链路追溯",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "ingredient_batch_ids",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "weight_vs_recipe",
+      "display_name": "实际称重vs配方",
+      "input_type": "composite",
+      "track_collectability": true,
+      "business_value": "配方执行偏差影响力学性能",
+      "composite_schema": {
+        "status": {
+          "input_type": "enum",
+          "display_name": "偏差状态"
+        },
+        "detail": {
+          "input_type": "text",
+          "display_name": "偏差详情"
+        }
+      },
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "quality",
+        "kv2"
+      ],
+      "enum_options": [
+        {
+          "value": "consistent",
+          "label": "一致"
+        },
+        {
+          "value": "has_deviation",
+          "label": "有偏差"
+        }
+      ]
+    },
+    {
+      "field_id": "mixing_time_min",
+      "display_name": "搅拌时间",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "搅拌充分性控制",
+      "unit": "min",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "mixing_time_s"
+    },
+    {
+      "field_id": "mixing_current_A",
+      "display_name": "搅拌电流",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "搅拌负荷与均匀性指示",
+      "unit": "A",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "motor_current_A"
+    },
+    {
+      "field_id": "current_fluctuation",
+      "display_name": "电流波动明显",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "设备异常或物料异常预警"
+    },
+    {
+      "field_id": "ambient_temp_humidity_recorded",
+      "display_name": "环境温湿度有记录",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "环境因素影响配方稳定性"
+    },
+    {
+      "field_id": "ambient_temp_c",
+      "display_name": "环境温度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "配粉环境监控",
+      "unit": "°C",
+      "default_value_priority": "green"
+    },
+    {
+      "field_id": "ambient_humidity_pct",
+      "display_name": "环境湿度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "粉体吸湿风险控制",
+      "unit": "%",
+      "default_value_priority": "green"
+    },
+    {
+      "field_id": "manual_paper_record",
+      "display_name": "依赖纸质配料单",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "人工记录痛点识别",
+      "default_kpi_tags": [
+        "knowledge_capture"
+      ]
+    },
+    {
+      "field_id": "substitution_record_exists",
+      "display_name": "原料替代有记录",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "替代料追溯合规"
+    },
+    {
+      "field_id": "substitution_detail",
+      "display_name": "原料替代详情",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "替代决策与影响记录"
+    },
+    {
+      "field_id": "ingredient_scan_possible",
+      "display_name": "原料批次可扫码",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "批次采集自动化评估"
+    },
+    {
+      "field_id": "powder_batch_id",
+      "display_name": "配粉批次号",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "配粉产出批次标识",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "batch_id",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "seal_quality",
+      "display_name": "钢带闭合/合缝质量",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "合缝不良导致漏粉与力学性能下降",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "quality",
+        "first_pass_yield"
+      ]
+    },
+    {
+      "field_id": "powder_leak",
+      "display_name": "漏粉程度",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "漏粉缺陷早期预警",
+      "enum_options": [
+        {
+          "value": "none",
+          "label": "无"
+        },
+        {
+          "value": "slight",
+          "label": "轻微"
+        },
+        {
+          "value": "severe",
+          "label": "严重"
+        }
+      ],
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "powder_leak_level",
+      "default_kpi_tags": [
+        "quality",
+        "first_pass_yield"
+      ]
+    },
+    {
+      "field_id": "fill_rate_kg_h",
+      "display_name": "填充速度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "填充效率与节拍监控",
+      "unit": "kg/h",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "fill_rate_kg_h",
+      "default_kpi_tags": [
+        "delivery_cycle"
+      ]
+    },
+    {
+      "field_id": "forming_pressure",
+      "display_name": "成型压力",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "合缝密实度控制",
+      "unit": "MPa",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "forming_pressure_MPa",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "frequent_stop_cleaning",
+      "display_name": "频繁停机清理",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "停机清理影响OEE"
+    },
+    {
+      "field_id": "fill_rate_method",
+      "display_name": "填充率检测方式",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "填充率检测能力评估",
+      "enum_options": [
+        {
+          "value": "weighing_offline",
+          "label": "离线称重"
+        },
+        {
+          "value": "weighing_online",
+          "label": "在线称重"
+        },
+        {
+          "value": "xrf",
+          "label": "XRF"
+        },
+        {
+          "value": "experience",
+          "label": "经验判断"
+        },
+        {
+          "value": "none",
+          "label": "无检测"
+        }
+      ],
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "quality",
+        "first_pass_yield"
+      ]
+    },
+    {
+      "field_id": "fill_rate_check_frequency",
+      "display_name": "填充率检测频次",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "检测滞后风险评估",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "need_online_detection",
+      "display_name": "是否需要在线检测",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "在线检测投资优先级",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "wait_time_powder_to_fill_min",
+      "display_name": "配粉→填充等待时间",
+      "input_type": "duration_min",
+      "track_collectability": true,
+      "business_value": "物料协同瓶颈识别",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "delivery_cycle",
+        "oee"
+      ]
+    },
+    {
+      "field_id": "fill_ratio_pct",
+      "display_name": "填充率",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "药芯焊丝核心质量指标，影响Rm与KV₂",
+      "unit": "%",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "fill_ratio_pct",
+      "default_kpi_tags": [
+        "quality",
+        "first_pass_yield",
+        "kv2",
+        "rm"
+      ]
+    },
+    {
+      "field_id": "strip_tension_n",
+      "display_name": "钢带张力",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "填充过程张力控制",
+      "unit": "N",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "strip_tension_N",
+      "default_kpi_tags": [
+        "quality",
+        "rm"
+      ]
+    },
+    {
+      "field_id": "seal_quality_photo",
+      "display_name": "合缝质量照片",
+      "input_type": "photo_ref",
+      "track_collectability": true,
+      "business_value": "缺陷视觉证据留存"
+    },
+    {
+      "field_id": "drawing_force",
+      "display_name": "拉拔力",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "拉拔负荷监控",
+      "unit": "kN",
+      "default_value_priority": "yellow"
+    },
+    {
+      "field_id": "motor_current",
+      "display_name": "电机电流",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "电机负荷监控（拉拔/拔丝）",
+      "unit": "A",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "current_A"
+    },
+    {
+      "field_id": "surface_defect",
+      "display_name": "表面质量",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "表面缺陷影响后续镀铜",
+      "enum_options": [
+        {
+          "value": "none",
+          "label": "无缺陷"
+        },
+        {
+          "value": "crack",
+          "label": "开裂"
+        },
+        {
+          "value": "peeling",
+          "label": "镀层剥落"
+        },
+        {
+          "value": "other",
+          "label": "其他"
+        }
+      ],
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "surface_defect",
+      "default_kpi_tags": [
+        "quality",
+        "first_pass_yield"
+      ]
+    },
+    {
+      "field_id": "draw_speed_sync",
+      "display_name": "拉拔与填充速度匹配",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "工序节拍协同",
+      "default_value_priority": "yellow"
+    },
+    {
+      "field_id": "trace_back_powder",
+      "display_name": "可追溯到粉批次",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "质量问题逆向追溯能力",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "surface_defect_photo",
+      "display_name": "表面缺陷照片",
+      "input_type": "photo_ref",
+      "track_collectability": true,
+      "business_value": "缺陷样本留存"
+    },
+    {
+      "field_id": "drawing_realtime_record",
+      "display_name": "拉拔参数实时记录",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "过程数据可追溯性"
+    },
+    {
+      "field_id": "bath_temp",
+      "display_name": "镀液温度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "镀层结晶质量影响因子",
+      "unit": "°C",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "bath_temp_C",
+      "default_kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ]
+    },
+    {
+      "field_id": "bath_ph",
+      "display_name": "镀液pH",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "镀液化学稳定性",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "bath_ph",
+      "default_kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ]
+    },
+    {
+      "field_id": "current_density",
+      "display_name": "电流密度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "镀层厚度与耐蚀性关键参数",
+      "unit": "A/dm²",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "current_density_A_per_dm2",
+      "default_kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ]
+    },
+    {
+      "field_id": "coating_uniform",
+      "display_name": "镀层外观均匀",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "外观质量初判",
+      "default_value_priority": "yellow"
+    },
+    {
+      "field_id": "thickness_method",
+      "display_name": "镀层厚度检测方式",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "厚度检测能力",
+      "enum_options": [
+        {
+          "value": "micrometer",
+          "label": "千分尺"
+        },
+        {
+          "value": "xrf_offline",
+          "label": "XRF离线"
+        },
+        {
+          "value": "xrf_online",
+          "label": "XRF在线"
+        },
+        {
+          "value": "none",
+          "label": "无检测"
+        }
+      ],
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "corrosion_i_value"
+      ]
+    },
+    {
+      "field_id": "thickness_frequency",
+      "display_name": "厚度检测频次",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "检测覆盖度评估",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "corrosion_i_value"
+      ]
+    },
+    {
+      "field_id": "customer_complaint",
+      "display_name": "客户投诉历史",
+      "input_type": "composite",
+      "track_collectability": true,
+      "business_value": "耐蚀性等质量风险历史",
+      "composite_schema": {
+        "exists": {
+          "input_type": "yes_no_unknown",
+          "display_name": "是否有投诉"
+        },
+        "category": {
+          "input_type": "text",
+          "display_name": "投诉类别"
+        },
+        "period": {
+          "input_type": "text",
+          "display_name": "时间段"
+        }
+      },
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "quality",
+        "corrosion_i_value"
+      ]
+    },
+    {
+      "field_id": "trace_plating_params",
+      "display_name": "投诉时可查镀铜参数",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "质量追溯闭环能力",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "coating_thickness_top_um",
+      "display_name": "镀层厚度(上)",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "直接决定耐蚀I值",
+      "unit": "μm",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "coating_thickness_top_um",
+      "default_kpi_tags": [
+        "corrosion_i_value",
+        "quality"
+      ]
+    },
+    {
+      "field_id": "coating_thickness_bottom_um",
+      "display_name": "镀层厚度(下)",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "镀层均匀性",
+      "unit": "μm",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "coating_thickness_bottom_um",
+      "default_kpi_tags": [
+        "corrosion_i_value"
+      ]
+    },
+    {
+      "field_id": "plating_line_speed",
+      "display_name": "镀铜线速度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "镀铜节拍监控",
+      "unit": "m/min",
+      "default_value_priority": "green",
+      "maps_to_manufacturing_field_id": "line_speed_m_per_min"
+    },
+    {
+      "field_id": "plating_bath_monitoring",
+      "display_name": "镀液参数监测方式",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "镀液监控成熟度",
+      "enum_options": [
+        {
+          "value": "online",
+          "label": "在线连续"
+        },
+        {
+          "value": "periodic_manual",
+          "label": "定期人工"
+        },
+        {
+          "value": "event_only",
+          "label": "仅异常时"
+        }
+      ]
+    },
+    {
+      "field_id": "finished_label",
+      "display_name": "成品批次标签内容",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "成品标识与追溯信息完整性",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "label_content",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "label_method",
+      "display_name": "标签生成方式",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "标识自动化水平",
+      "enum_options": [
+        {
+          "value": "auto_print",
+          "label": "自动打印"
+        },
+        {
+          "value": "handwritten",
+          "label": "手写"
+        },
+        {
+          "value": "mixed",
+          "label": "混合"
+        }
+      ],
+      "default_value_priority": "yellow"
+    },
+    {
+      "field_id": "agv_call_method",
+      "display_name": "AGV呼叫方式",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "物流协同方式",
+      "enum_options": [
+        {
+          "value": "button",
+          "label": "按钮"
+        },
+        {
+          "value": "system",
+          "label": "系统"
+        },
+        {
+          "value": "phone",
+          "label": "电话"
+        },
+        {
+          "value": "manual",
+          "label": "人工搬运"
+        }
+      ],
+      "default_value_priority": "yellow",
+      "default_kpi_tags": [
+        "delivery_cycle"
+      ]
+    },
+    {
+      "field_id": "agv_wait_min",
+      "display_name": "AGV平均等待时间",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "隐性等待与物流瓶颈",
+      "unit": "min",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "oee",
+        "delivery_cycle"
+      ]
+    },
+    {
+      "field_id": "stock_record_method",
+      "display_name": "入库登记方式",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "库存数据采集方式",
+      "enum_options": [
+        {
+          "value": "barcode_scan",
+          "label": "扫码"
+        },
+        {
+          "value": "handwritten_ledger",
+          "label": "手写台账"
+        },
+        {
+          "value": "system_entry",
+          "label": "系统录入"
+        },
+        {
+          "value": "none",
+          "label": "无登记"
+        }
+      ],
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "inventory_visibility"
+      ]
+    },
+    {
+      "field_id": "inventory_visible",
+      "display_name": "能否实时查库存",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "库存可视化能力",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "inventory_visibility",
+        "delivery_cycle"
+      ]
+    },
+    {
+      "field_id": "sales_lookup",
+      "display_name": "销售急要批次可查到位置",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "急单响应能力",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "delivery_cycle",
+        "inventory_visibility"
+      ]
+    },
+    {
+      "field_id": "finished_batch_id",
+      "display_name": "成品批次号",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "成品批次唯一标识",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "finished_batch_id",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "inlet_diameter_um",
+      "display_name": "入口线径",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "拔丝前后线径追溯",
+      "unit": "μm",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "inlet_diameter_um"
+    },
+    {
+      "field_id": "outlet_diameter_um",
+      "display_name": "出口线径",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "成品线径合规",
+      "unit": "μm",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "outlet_diameter_um",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "cutting_speed",
+      "display_name": "切割速度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "切丝节拍",
+      "unit": "次/min",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "cutting_speed_cuts_per_min"
+    },
+    {
+      "field_id": "length_mm",
+      "display_name": "单根长度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "焊条长度规格合规",
+      "unit": "mm",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "length_mm",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "total_count",
+      "display_name": "累计切割数量",
+      "input_type": "number",
+      "track_collectability": true,
+      "business_value": "产量统计",
+      "default_value_priority": "green",
+      "maps_to_manufacturing_field_id": "total_count"
+    },
+    {
+      "field_id": "fault_code",
+      "display_name": "故障代码",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "设备故障追溯",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "fault_code"
+    },
+    {
+      "field_id": "cutting_length_tolerance",
+      "display_name": "长度公差符合",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "尺寸质量控制"
+    },
+    {
+      "field_id": "core_speed",
+      "display_name": "焊芯速度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "压涂线速度与药皮厚度关联",
+      "unit": "m/min",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "core_speed_m_per_min"
+    },
+    {
+      "field_id": "coating_pressure",
+      "display_name": "压涂压力",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "药皮厚度控制关键参数",
+      "unit": "MPa",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "coating_pressure_MPa",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "coating_thickness",
+      "display_name": "药皮厚度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "焊条药皮规格合规",
+      "unit": "mm",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "coating_thickness_mm",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "zone_temp",
+      "display_name": "温区温度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "压涂/烘干温区工艺控制",
+      "unit": "°C",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "zone_temp_C"
+    },
+    {
+      "field_id": "coating_feed_rate",
+      "display_name": "涂覆进给速率",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "涂覆均匀性辅助参数",
+      "default_value_priority": "green",
+      "maps_to_manufacturing_field_id": "coating_feed_rate"
+    },
+    {
+      "field_id": "coating_zone_id",
+      "display_name": "压涂温区编号",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "多温区定位",
+      "maps_to_manufacturing_field_id": "zone_id"
+    },
+    {
+      "field_id": "set_temp",
+      "display_name": "设定温度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "烘干工艺设定值",
+      "unit": "°C",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "set_temp_C"
+    },
+    {
+      "field_id": "actual_temp",
+      "display_name": "实际温度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "烘干温度合规监控",
+      "unit": "°C",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "actual_temp_C",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "belt_speed",
+      "display_name": "网带速度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "烘干停留时间与脱水效果",
+      "unit": "m/min",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "belt_speed_m_per_min"
+    },
+    {
+      "field_id": "humidity",
+      "display_name": "环境湿度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "烘干环境条件",
+      "unit": "%",
+      "default_value_priority": "green",
+      "maps_to_manufacturing_field_id": "humidity_pct"
+    },
+    {
+      "field_id": "moisture",
+      "display_name": "焊条水分含量",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "药皮含水率合规判定",
+      "unit": "%",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "moisture_pct",
+      "default_kpi_tags": [
+        "quality"
+      ]
+    },
+    {
+      "field_id": "drying_zone_id",
+      "display_name": "烘干温区编号",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "多温区烘干定位",
+      "maps_to_manufacturing_field_id": "zone_id"
+    },
+    {
+      "field_id": "temp_curve_available",
+      "display_name": "温度曲线可获取",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "烘干工艺曲线追溯能力",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "winding_motor_rpm",
+      "display_name": "层绕转速",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "收线速度控制",
+      "unit": "rpm",
+      "default_value_priority": "green",
+      "maps_to_manufacturing_field_id": "motor_rpm"
+    },
+    {
+      "field_id": "spool_id",
+      "display_name": "线盘编号",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "成品盘追溯标识",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "spool_id",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "winding_line_speed",
+      "display_name": "层绕线速度",
+      "input_type": "field_value",
+      "track_collectability": true,
+      "business_value": "层绕节拍",
+      "unit": "m/min",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "line_speed_m_per_min"
+    },
+    {
+      "field_id": "package_count",
+      "display_name": "包装数量",
+      "input_type": "number",
+      "track_collectability": true,
+      "business_value": "包装产出统计",
+      "default_value_priority": "green",
+      "maps_to_manufacturing_field_id": "package_count"
+    },
+    {
+      "field_id": "pack_label_content",
+      "display_name": "包装标签内容",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "成品标识信息",
+      "default_value_priority": "yellow",
+      "maps_to_manufacturing_field_id": "label_content",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "pack_finished_batch_id",
+      "display_name": "包装批次号",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "成品批次追溯",
+      "default_value_priority": "red",
+      "maps_to_manufacturing_field_id": "finished_batch_id",
+      "default_kpi_tags": [
+        "traceability"
+      ]
+    },
+    {
+      "field_id": "plan_vs_execution",
+      "display_name": "计划vs执行一致",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "计划执行偏差识别",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "delivery_cycle"
+      ]
+    },
+    {
+      "field_id": "plan_change_recorded",
+      "display_name": "计划变更有记录",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "排产变更可追溯",
+      "default_value_priority": "yellow"
+    },
+    {
+      "field_id": "plan_change_detail",
+      "display_name": "计划变更详情",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "变更原因与影响记录"
+    },
+    {
+      "field_id": "alarm_first_response",
+      "display_name": "报警后第一步操作",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "异常响应流程",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "oee"
+      ]
+    },
+    {
+      "field_id": "alarm_notify_chain",
+      "display_name": "报警通知链路",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "异常升级机制",
+      "default_value_priority": "yellow"
+    },
+    {
+      "field_id": "alarm_record_location",
+      "display_name": "报警记录位置",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "异常记录系统化程度",
+      "default_value_priority": "yellow"
+    },
+    {
+      "field_id": "shift_handover_method",
+      "display_name": "交接班方式",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "班次信息传递机制",
+      "default_value_priority": "yellow",
+      "default_kpi_tags": [
+        "knowledge_capture"
+      ]
+    },
+    {
+      "field_id": "shift_handover_gaps",
+      "display_name": "交接班信息遗漏",
+      "input_type": "text",
+      "track_collectability": true,
+      "business_value": "信息断点识别",
+      "default_value_priority": "red",
+      "default_kpi_tags": [
+        "knowledge_capture"
+      ]
+    },
+    {
+      "field_id": "batch_energy_tracked",
+      "display_name": "关注单批次能耗",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "能耗精细化管理",
+      "default_value_priority": "yellow",
+      "default_kpi_tags": [
+        "energy"
+      ]
+    },
+    {
+      "field_id": "green_power_scheduling",
+      "display_name": "绿电时段影响排产",
+      "input_type": "yes_no_unknown",
+      "track_collectability": true,
+      "business_value": "清洁能源与排产联动",
+      "default_value_priority": "green",
+      "default_kpi_tags": [
+        "energy"
+      ]
+    },
+    {
+      "field_id": "motor_rpm",
+      "display_name": "电机转速",
+      "input_type": "field_value",
+      "unit": "rpm",
+      "maps_to_manufacturing_field_id": "motor_rpm",
+      "track_collectability": true,
+      "business_value": "拔丝/层绕速度控制"
+    },
+    {
+      "field_id": "tension",
+      "display_name": "张力",
+      "input_type": "field_value",
+      "unit": "kN",
+      "maps_to_manufacturing_field_id": "tension_kN",
+      "track_collectability": true,
+      "default_value_priority": "red",
+      "business_value": "拔丝/层绕张力，影响抗拉强度Rm",
+      "default_kpi_tags": [
+        "rm",
+        "quality"
+      ]
+    },
+    {
+      "field_id": "substitution",
+      "display_name": "原料替代",
+      "input_type": "composite",
+      "composite_schema": {
+        "occurs": {
+          "input_type": "yes_no_unknown",
+          "display_name": "是否发生替代"
+        },
+        "recorded": {
+          "input_type": "yes_no_unknown",
+          "display_name": "是否有记录"
+        },
+        "detail": {
+          "input_type": "text",
+          "display_name": "替代详情"
+        }
+      },
+      "track_collectability": true,
+      "business_value": "缺货替代决策与追溯合规"
+    },
+    {
+      "field_id": "voltage_v",
+      "display_name": "电机电压",
+      "input_type": "field_value",
+      "unit": "V",
+      "maps_to_manufacturing_field_id": "voltage_V",
+      "track_collectability": true,
+      "business_value": "电气参数辅助诊断"
+    },
+    {
+      "field_id": "surface_defect_wire",
+      "display_name": "拔丝表面缺陷",
+      "input_type": "enum",
+      "maps_to_manufacturing_field_id": "surface_defect",
+      "track_collectability": true,
+      "default_value_priority": "yellow",
+      "business_value": "拔丝表面质量判定",
+      "default_kpi_tags": [
+        "quality"
+      ],
+      "enum_options": [
+        {
+          "value": "none",
+          "label": "无"
+        },
+        {
+          "value": "scratch",
+          "label": "划伤"
+        },
+        {
+          "value": "pit",
+          "label": "麻点"
+        },
+        {
+          "value": "oxide",
+          "label": "氧化"
+        },
+        {
+          "value": "other",
+          "label": "其他"
+        }
+      ]
+    },
+    {
+      "field_id": "equipment_status",
+      "display_name": "设备运行状态",
+      "input_type": "enum",
+      "track_collectability": true,
+      "business_value": "设备可用性",
+      "enum_options": [
+        {
+          "value": "running",
+          "label": "运行"
+        },
+        {
+          "value": "idle",
+          "label": "空闲"
+        },
+        {
+          "value": "fault",
+          "label": "故障"
+        },
+        {
+          "value": "maintenance",
+          "label": "维护"
+        }
+      ]
+    },
+    {
+      "field_id": "mixing_uniformity_method",
+      "display_name": "混合均匀度检测方式",
+      "input_type": "enum",
+      "enum_options": [
+        {
+          "value": "current_fluctuation",
+          "label": "搅拌电流波动分析"
+        },
+        {
+          "value": "nir_probe",
+          "label": "在线近红外探头"
+        }
+      ],
+      "track_collectability": true,
+      "maps_to_manufacturing_field_id": "mixing_uniformity_method",
+      "business_value": "配粉搅拌混合均匀性评估",
+      "enabled": true
+    }
+  ],
+  "step_field_bindings": [
+    {
+      "step_id": "cut_strip",
+      "field_id": "strip_batch_id",
+      "sort_order": 1
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "strip_thickness_mm",
+      "sort_order": 2
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "uncoil_tension_N",
+      "sort_order": 3
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "cut_length_mm",
+      "sort_order": 4
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "line_speed",
+      "sort_order": 5
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "manual_tension_adjustment",
+      "sort_order": 6
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "abnormal_strip_runoff",
+      "sort_order": 7
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "abnormal_strip_break",
+      "sort_order": 8
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "abnormal_time",
+      "sort_order": 9
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "abnormal_handling",
+      "sort_order": 10
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "sensor_needed",
+      "sort_order": 11
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "cut_length_setting_mode",
+      "sort_order": 12
+    },
+    {
+      "step_id": "cut_strip",
+      "field_id": "strip_batch_scannable",
+      "sort_order": 13
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "seal_quality",
+      "sort_order": 1
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "powder_leak",
+      "sort_order": 2
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "fill_rate_kg_h",
+      "sort_order": 3
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "forming_pressure",
+      "sort_order": 4
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "frequent_stop_cleaning",
+      "sort_order": 5
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "fill_rate_method",
+      "sort_order": 6
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "fill_rate_check_frequency",
+      "sort_order": 7
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "need_online_detection",
+      "sort_order": 8
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "wait_time_powder_to_fill_min",
+      "sort_order": 9
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "fill_ratio_pct",
+      "sort_order": 10
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "strip_tension_n",
+      "sort_order": 11
+    },
+    {
+      "step_id": "filling_forming",
+      "field_id": "seal_quality_photo",
+      "sort_order": 12
+    },
+    {
+      "step_id": "drawing",
+      "field_id": "drawing_force",
+      "sort_order": 1
+    },
+    {
+      "step_id": "drawing",
+      "field_id": "motor_current",
+      "sort_order": 2
+    },
+    {
+      "step_id": "drawing",
+      "field_id": "surface_defect",
+      "sort_order": 3
+    },
+    {
+      "step_id": "drawing",
+      "field_id": "draw_speed_sync",
+      "sort_order": 4
+    },
+    {
+      "step_id": "drawing",
+      "field_id": "trace_back_powder",
+      "sort_order": 5
+    },
+    {
+      "step_id": "drawing",
+      "field_id": "surface_defect_photo",
+      "sort_order": 6
+    },
+    {
+      "step_id": "drawing",
+      "field_id": "drawing_realtime_record",
+      "sort_order": 7
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "bath_temp",
+      "sort_order": 1
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "bath_ph",
+      "sort_order": 2
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "current_density",
+      "sort_order": 3
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "coating_uniform",
+      "sort_order": 4
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "thickness_method",
+      "sort_order": 5
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "thickness_frequency",
+      "sort_order": 6
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "customer_complaint",
+      "sort_order": 7
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "trace_plating_params",
+      "sort_order": 8
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "coating_thickness_top_um",
+      "sort_order": 9
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "coating_thickness_bottom_um",
+      "sort_order": 10
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "plating_line_speed",
+      "sort_order": 11
+    },
+    {
+      "step_id": "copper_plating",
+      "field_id": "plating_bath_monitoring",
+      "sort_order": 12
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "cutting_speed",
+      "sort_order": 1
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "length_mm",
+      "sort_order": 2
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "total_count",
+      "sort_order": 3
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "fault_code",
+      "sort_order": 4
+    },
+    {
+      "step_id": "cutting",
+      "field_id": "cutting_length_tolerance",
+      "sort_order": 5
+    },
+    {
+      "step_id": "coating",
+      "field_id": "core_speed",
+      "sort_order": 1
+    },
+    {
+      "step_id": "coating",
+      "field_id": "coating_pressure",
+      "sort_order": 2
+    },
+    {
+      "step_id": "coating",
+      "field_id": "coating_thickness",
+      "sort_order": 3
+    },
+    {
+      "step_id": "coating",
+      "field_id": "zone_temp",
+      "sort_order": 4
+    },
+    {
+      "step_id": "coating",
+      "field_id": "coating_feed_rate",
+      "sort_order": 5
+    },
+    {
+      "step_id": "coating",
+      "field_id": "coating_zone_id",
+      "sort_order": 6
+    },
+    {
+      "step_id": "drying",
+      "field_id": "set_temp",
+      "sort_order": 1
+    },
+    {
+      "step_id": "drying",
+      "field_id": "actual_temp",
+      "sort_order": 2
+    },
+    {
+      "step_id": "drying",
+      "field_id": "belt_speed",
+      "sort_order": 3
+    },
+    {
+      "step_id": "drying",
+      "field_id": "humidity",
+      "sort_order": 4
+    },
+    {
+      "step_id": "drying",
+      "field_id": "moisture",
+      "sort_order": 5
+    },
+    {
+      "step_id": "drying",
+      "field_id": "drying_zone_id",
+      "sort_order": 6
+    },
+    {
+      "step_id": "drying",
+      "field_id": "temp_curve_available",
+      "sort_order": 7
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "package_count",
+      "sort_order": 1
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "pack_label_content",
+      "sort_order": 2
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "pack_finished_batch_id",
+      "sort_order": 3
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "plan_vs_execution",
+      "sort_order": 1
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "plan_change_recorded",
+      "sort_order": 2
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "plan_change_detail",
+      "sort_order": 3
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "alarm_first_response",
+      "sort_order": 4
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "alarm_notify_chain",
+      "sort_order": 5
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "alarm_record_location",
+      "sort_order": 6
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "shift_handover_method",
+      "sort_order": 7
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "shift_handover_gaps",
+      "sort_order": 8
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "batch_energy_tracked",
+      "sort_order": 9
+    },
+    {
+      "step_id": "cross_process",
+      "field_id": "green_power_scheduling",
+      "sort_order": 10
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "motor_current",
+      "sort_order": 1
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "motor_rpm",
+      "sort_order": 2
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "line_speed",
+      "sort_order": 3
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "inlet_diameter_um",
+      "sort_order": 4
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "outlet_diameter_um",
+      "sort_order": 5
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "tension",
+      "sort_order": 6
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "sensor_needed",
+      "sort_order": 7
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "voltage_v",
+      "sort_order": 8
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "surface_defect_wire",
+      "sort_order": 9
+    },
+    {
+      "step_id": "wire_drawing",
+      "field_id": "equipment_status",
+      "sort_order": 10
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "motor_current",
+      "sort_order": 1
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "motor_rpm",
+      "sort_order": 2
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "line_speed",
+      "sort_order": 3
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "inlet_diameter_um",
+      "sort_order": 4
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "outlet_diameter_um",
+      "sort_order": 5
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "tension",
+      "sort_order": 6
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "sensor_needed",
+      "sort_order": 7
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "voltage_v",
+      "sort_order": 8
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "surface_defect_wire",
+      "sort_order": 9
+    },
+    {
+      "step_id": "rough_drawing",
+      "field_id": "equipment_status",
+      "sort_order": 10
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "motor_current",
+      "sort_order": 1
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "motor_rpm",
+      "sort_order": 2
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "line_speed",
+      "sort_order": 3
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "inlet_diameter_um",
+      "sort_order": 4
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "outlet_diameter_um",
+      "sort_order": 5
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "tension",
+      "sort_order": 6
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "sensor_needed",
+      "sort_order": 7
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "voltage_v",
+      "sort_order": 8
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "surface_defect_wire",
+      "sort_order": 9
+    },
+    {
+      "step_id": "fine_drawing",
+      "field_id": "equipment_status",
+      "sort_order": 10
+    },
+    {
+      "step_id": "winding",
+      "field_id": "motor_rpm",
+      "sort_order": 1
+    },
+    {
+      "step_id": "winding",
+      "field_id": "tension",
+      "sort_order": 2
+    },
+    {
+      "step_id": "winding",
+      "field_id": "spool_id",
+      "sort_order": 3
+    },
+    {
+      "step_id": "winding",
+      "field_id": "winding_line_speed",
+      "sort_order": 4
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "recipe_id",
+      "sort_order": 1
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "ingredient_batch_ids",
+      "sort_order": 2
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "weight_vs_recipe",
+      "sort_order": 3
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "mixing_time_min",
+      "sort_order": 4
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "mixing_current_A",
+      "sort_order": 5
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "current_fluctuation",
+      "sort_order": 6
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "ambient_temp_humidity_recorded",
+      "sort_order": 7
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "ambient_temp_c",
+      "sort_order": 8
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "ambient_humidity_pct",
+      "sort_order": 9
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "manual_paper_record",
+      "sort_order": 10
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "substitution",
+      "sort_order": 11
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "substitution_record_exists",
+      "sort_order": 12
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "substitution_detail",
+      "sort_order": 13
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "ingredient_scan_possible",
+      "sort_order": 14
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "powder_batch_id",
+      "sort_order": 15
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "finished_label",
+      "sort_order": 1
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "label_method",
+      "sort_order": 2
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "agv_call_method",
+      "sort_order": 3
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "agv_wait_min",
+      "sort_order": 4
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "stock_record_method",
+      "sort_order": 5
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "inventory_visible",
+      "sort_order": 6
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "sales_lookup",
+      "sort_order": 7
+    },
+    {
+      "step_id": "winding_packaging",
+      "field_id": "finished_batch_id",
+      "sort_order": 8
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "finished_label",
+      "sort_order": 1
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "label_method",
+      "sort_order": 2
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "agv_call_method",
+      "sort_order": 3
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "agv_wait_min",
+      "sort_order": 4
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "stock_record_method",
+      "sort_order": 5
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "inventory_visible",
+      "sort_order": 6
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "sales_lookup",
+      "sort_order": 7
+    },
+    {
+      "step_id": "packaging_stock_in",
+      "field_id": "finished_batch_id",
+      "sort_order": 8
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "finished_label",
+      "sort_order": 1
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "label_method",
+      "sort_order": 2
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "agv_call_method",
+      "sort_order": 3
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "agv_wait_min",
+      "sort_order": 4
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "stock_record_method",
+      "sort_order": 5
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "inventory_visible",
+      "sort_order": 6
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "sales_lookup",
+      "sort_order": 7
+    },
+    {
+      "step_id": "packaging",
+      "field_id": "finished_batch_id",
+      "sort_order": 8
+    },
+    {
+      "step_id": "powder_mixing",
+      "field_id": "mixing_uniformity_method",
+      "sort_order": 16,
+      "required": false,
+      "enabled": true
+    }
+  ],
+  "survey_templates": [
+    {
+      "template_id": "flux_core_wire",
+      "display_name": "药芯焊丝蹲点模板",
+      "product_template": "flux_core_wire",
+      "description": "裁带→配粉→填充成型→拉拔→镀铜→层绕包装入库",
+      "steps": [
+        {
+          "step_id": "cut_strip",
+          "sort_order": 1
+        },
+        {
+          "step_id": "powder_mixing",
+          "sort_order": 2
+        },
+        {
+          "step_id": "filling_forming",
+          "sort_order": 3
+        },
+        {
+          "step_id": "rough_drawing",
+          "sort_order": 4
+        },
+        {
+          "step_id": "fine_drawing",
+          "sort_order": 5
+        },
+        {
+          "step_id": "copper_plating",
+          "sort_order": 6
+        },
+        {
+          "step_id": "winding_packaging",
+          "sort_order": 7
+        }
+      ],
+      "cross_process_fields": [
+        {
+          "field_id": "plan_vs_execution",
+          "sort_order": 1
+        },
+        {
+          "field_id": "plan_change_recorded",
+          "sort_order": 2
+        },
+        {
+          "field_id": "plan_change_detail",
+          "sort_order": 3
+        },
+        {
+          "field_id": "alarm_first_response",
+          "sort_order": 4
+        },
+        {
+          "field_id": "alarm_notify_chain",
+          "sort_order": 5
+        },
+        {
+          "field_id": "alarm_record_location",
+          "sort_order": 6
+        },
+        {
+          "field_id": "shift_handover_method",
+          "sort_order": 7
+        },
+        {
+          "field_id": "shift_handover_gaps",
+          "sort_order": 8
+        },
+        {
+          "field_id": "batch_energy_tracked",
+          "sort_order": 9
+        },
+        {
+          "field_id": "green_power_scheduling",
+          "sort_order": 10
+        }
+      ]
+    },
+    {
+      "template_id": "welding_rod",
+      "display_name": "焊条蹲点模板",
+      "product_template": "welding_rod",
+      "description": "拔丝→切丝→配粉→压涂→烘干→层绕包装入库",
+      "steps": [
+        {
+          "step_id": "wire_drawing",
+          "sort_order": 1
+        },
+        {
+          "step_id": "cutting",
+          "sort_order": 2
+        },
+        {
+          "step_id": "powder_mixing",
+          "sort_order": 3
+        },
+        {
+          "step_id": "coating",
+          "sort_order": 4
+        },
+        {
+          "step_id": "drying",
+          "sort_order": 5
+        },
+        {
+          "step_id": "packaging_stock_in",
+          "sort_order": 6
+        }
+      ],
+      "cross_process_fields": [
+        {
+          "field_id": "plan_vs_execution",
+          "sort_order": 1
+        },
+        {
+          "field_id": "plan_change_recorded",
+          "sort_order": 2
+        },
+        {
+          "field_id": "plan_change_detail",
+          "sort_order": 3
+        },
+        {
+          "field_id": "alarm_first_response",
+          "sort_order": 4
+        },
+        {
+          "field_id": "alarm_notify_chain",
+          "sort_order": 5
+        },
+        {
+          "field_id": "alarm_record_location",
+          "sort_order": 6
+        },
+        {
+          "field_id": "shift_handover_method",
+          "sort_order": 7
+        },
+        {
+          "field_id": "shift_handover_gaps",
+          "sort_order": 8
+        },
+        {
+          "field_id": "batch_energy_tracked",
+          "sort_order": 9
+        },
+        {
+          "field_id": "green_power_scheduling",
+          "sort_order": 10
+        }
+      ]
+    },
+    {
+      "template_id": "solid_wire",
+      "display_name": "实心焊丝蹲点模板",
+      "product_template": "solid_wire",
+      "description": "粗拔→细拔→镀铜→层绕→包装",
+      "steps": [
+        {
+          "step_id": "rough_drawing",
+          "sort_order": 1
+        },
+        {
+          "step_id": "fine_drawing",
+          "sort_order": 2
+        },
+        {
+          "step_id": "copper_plating",
+          "sort_order": 3
+        },
+        {
+          "step_id": "winding",
+          "sort_order": 4
+        },
+        {
+          "step_id": "packaging",
+          "sort_order": 5
+        }
+      ],
+      "cross_process_fields": [
+        {
+          "field_id": "plan_vs_execution",
+          "sort_order": 1
+        },
+        {
+          "field_id": "plan_change_recorded",
+          "sort_order": 2
+        },
+        {
+          "field_id": "plan_change_detail",
+          "sort_order": 3
+        },
+        {
+          "field_id": "alarm_first_response",
+          "sort_order": 4
+        },
+        {
+          "field_id": "alarm_notify_chain",
+          "sort_order": 5
+        },
+        {
+          "field_id": "alarm_record_location",
+          "sort_order": 6
+        },
+        {
+          "field_id": "shift_handover_method",
+          "sort_order": 7
+        },
+        {
+          "field_id": "shift_handover_gaps",
+          "sort_order": 8
+        },
+        {
+          "field_id": "batch_energy_tracked",
+          "sort_order": 9
+        },
+        {
+          "field_id": "green_power_scheduling",
+          "sort_order": 10
+        }
+      ]
+    }
+  ],
+  "key_questions": [
+    {
+      "question_id": "kq_cut_strip_1",
+      "step_id": "cut_strip",
+      "question_text": "钢带厚度偏差多少会影响后续填充？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "strip_thickness_mm",
+        "uncoil_tension_N"
+      ]
+    },
+    {
+      "question_id": "kq_cut_strip_2",
+      "step_id": "cut_strip",
+      "question_text": "断带或跑偏后如何恢复生产并记录？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "abnormal_strip_break",
+        "abnormal_handling"
+      ]
+    },
+    {
+      "question_id": "kq_powder_1",
+      "step_id": "powder_mixing",
+      "question_text": "某种粉临时缺货怎么替代？替代有记录吗？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "substitution_record_exists",
+        "substitution_detail"
+      ]
+    },
+    {
+      "question_id": "kq_powder_2",
+      "step_id": "powder_mixing",
+      "question_text": "实际称重与配方偏差多少会影响最终性能？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "weight_vs_recipe",
+        "recipe_id"
+      ]
+    },
+    {
+      "question_id": "kq_filling_1",
+      "step_id": "filling_forming",
+      "question_text": "怎么判断这卷丝填充够了？凭经验还是标准？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "fill_rate_method",
+        "fill_ratio_pct"
+      ]
+    },
+    {
+      "question_id": "kq_filling_2",
+      "step_id": "filling_forming",
+      "question_text": "配粉完成后通常要等多久才能上填充线？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "wait_time_powder_to_fill_min"
+      ]
+    },
+    {
+      "question_id": "kq_drawing_1",
+      "step_id": "drawing",
+      "question_text": "拉拔后发现填充不足，能追溯到哪一批粉吗？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "trace_back_powder"
+      ]
+    },
+    {
+      "question_id": "kq_drawing_2",
+      "step_id": "drawing",
+      "question_text": "拉拔速度与填充速度不匹配时怎么调整？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "draw_speed_sync",
+        "line_speed"
+      ]
+    },
+    {
+      "question_id": "kq_plating_1",
+      "step_id": "copper_plating",
+      "question_text": "客户投诉耐蚀性时，能查到当时的镀铜参数吗？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "trace_plating_params",
+        "customer_complaint"
+      ]
+    },
+    {
+      "question_id": "kq_plating_2",
+      "step_id": "copper_plating",
+      "question_text": "镀层厚度检测多久做一次？用什么方法？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "thickness_method",
+        "thickness_frequency"
+      ]
+    },
+    {
+      "question_id": "kq_wp_1",
+      "step_id": "winding_packaging",
+      "question_text": "销售急要某批次，能否查到在哪、还有多少？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "sales_lookup",
+        "inventory_visible"
+      ]
+    },
+    {
+      "question_id": "kq_wp_2",
+      "step_id": "winding_packaging",
+      "question_text": "成品标签上的信息是自动打印还是手写？包含哪些追溯字段？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "finished_label",
+        "label_method"
+      ]
+    },
+    {
+      "question_id": "kq_rough_1",
+      "step_id": "rough_drawing",
+      "question_text": "粗拔后发现填充不足，能追溯到哪一批粉吗？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "trace_back_powder"
+      ]
+    },
+    {
+      "question_id": "kq_rough_2",
+      "step_id": "rough_drawing",
+      "question_text": "粗拔速度与填充速度不匹配时怎么调整？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "draw_speed_sync",
+        "line_speed"
+      ]
+    },
+    {
+      "question_id": "kq_fine_1",
+      "step_id": "fine_drawing",
+      "question_text": "细拔后发现填充不足，能追溯到哪一批粉吗？",
+      "sort_order": 1,
+      "related_field_ids": [
+        "trace_back_powder"
+      ]
+    },
+    {
+      "question_id": "kq_fine_2",
+      "step_id": "fine_drawing",
+      "question_text": "细拔速度与填充速度不匹配时怎么调整？",
+      "sort_order": 2,
+      "related_field_ids": [
+        "draw_speed_sync",
+        "line_speed"
+      ]
+    }
+  ],
+  "interview_questions": [
+    {
+      "question_id": "1.1",
+      "category": "strategy",
+      "question_text": "当前高端市场（海洋工程/LNG/超高压管线）的客户，最常提出的质量或交付要求是什么？有没有因数据追溯不足而丢单的情况？",
+      "hypothesis": "高端项目要求全生命周期材料追溯；出口业务面临欧盟CBAM碳关税等新规",
+      "expected_use": "定义数据追溯深度（原料批次→成品性能）",
+      "sort_order": 1,
+      "related_kpi_tags": [
+        "traceability",
+        "delivery_cycle"
+      ]
+    },
+    {
+      "question_id": "1.2",
+      "category": "strategy",
+      "question_text": "出口占比已达40%，不同国家/地区的认证标准（如AWS、EN、JIS）差异大吗？当前如何管理这些标准？",
+      "hypothesis": "多标准并行增加配方和质检复杂度；人工管理易出错",
+      "expected_use": "评估PLM系统对多标准BOM的支持需求",
+      "sort_order": 2,
+      "related_kpi_tags": [
+        "traceability",
+        "knowledge_capture"
+      ]
+    },
+    {
+      "question_id": "1.3",
+      "category": "strategy",
+      "question_text": "2025年药芯焊丝销量暴增，但2024年焊丝总产量仅0.2964万吨（设计产能10万吨）。产能释放的主要瓶颈是什么？",
+      "hypothesis": "可能受限于高端焊丝工艺稳定性、原料供应协同、设备OEE低下",
+      "expected_use": "聚焦资源投入方向（工艺优化 vs 供应链）",
+      "sort_order": 3,
+      "related_kpi_tags": [
+        "oee",
+        "first_pass_yield",
+        "delivery_cycle"
+      ]
+    },
+    {
+      "question_id": "2.1",
+      "category": "operations",
+      "question_text": "常规订单交货周期宣称15–30天，但定制化订单（如Rm≥960MPa）是否经常延期？延期主因是生产排程、原料缺货，还是质量返工？",
+      "hypothesis": "高强焊材合格率可能偏低；人工排产无法动态响应插单",
+      "expected_use": "定义APS（高级排产）或质量预测的优先级",
+      "sort_order": 4,
+      "related_kpi_tags": [
+        "delivery_cycle",
+        "first_pass_yield"
+      ]
+    },
+    {
+      "question_id": "2.2",
+      "category": "operations",
+      "question_text": "AGV精准配送率达99.9%，但车间内是否存在隐性等待？例如：配粉完成但压涂机未就绪，导致半成品堆积？",
+      "hypothesis": "OT/IT断点导致物流与生产节拍脱节；缺乏全局可视化",
+      "expected_use": "验证WMS-MES集成必要性",
+      "sort_order": 5,
+      "related_kpi_tags": [
+        "oee",
+        "delivery_cycle",
+        "inventory_visibility"
+      ]
+    },
+    {
+      "question_id": "2.3",
+      "category": "operations",
+      "question_text": "2022年即达产，但2024年焊条产量24.91万吨（接近30万吨设计值），焊丝却严重不足。是否因焊丝线换型时间过长或调试损耗高？",
+      "hypothesis": "焊丝产线柔性不足；缺乏数字孪生仿真验证新工艺",
+      "expected_use": "评估数字孪生在换型优化中的价值",
+      "sort_order": 6,
+      "related_kpi_tags": [
+        "oee",
+        "first_pass_yield"
+      ]
+    },
+    {
+      "question_id": "3.1",
+      "category": "quality_cost",
+      "question_text": "对于Rm≥830MPa的高强焊材，一次合格率大概是多少？不合格品主要因力学性能（KV₂）不达标，还是外观缺陷？",
+      "hypothesis": "KV₂检测依赖离线抽检，无法实时干预；配方微小偏差被放大",
+      "expected_use": "聚焦在线质量检测（如冲击功预测模型）",
+      "sort_order": 7,
+      "related_kpi_tags": [
+        "first_pass_yield",
+        "kv2",
+        "quality"
+      ]
+    },
+    {
+      "question_id": "3.2",
+      "category": "quality_cost",
+      "question_text": "清洁能源覆盖60%生产用电，但综合能耗仍下降30%。是否有产线/时段的能耗异常？例如：夜间低谷电未被充分利用？",
+      "hypothesis": "能源数据未与生产计划联动；缺乏分产品能耗核算",
+      "expected_use": "定义能源管理模块范围",
+      "sort_order": 8,
+      "related_kpi_tags": [
+        "energy"
+      ]
+    },
+    {
+      "question_id": "3.3",
+      "category": "quality_cost",
+      "question_text": "年省用工成本5700万元，但高端人才（如配方工程师）是否仍紧缺？能否通过数据沉淀减少对老师傅经验的依赖？",
+      "hypothesis": "配方调整依赖个人经验；知识未资产化",
+      "expected_use": "验证AI配方推荐引擎的接受度",
+      "sort_order": 9,
+      "related_kpi_tags": [
+        "knowledge_capture"
+      ]
+    },
+    {
+      "question_id": "4.1",
+      "category": "risk_compliance",
+      "question_text": "出口超1亿美元，是否遭遇过海外客户对碳足迹的问询？是否有能力按订单提供产品碳排放数据？",
+      "hypothesis": "欧盟CBAM将于2026全面实施；当前无碳流追踪能力",
+      "expected_use": "紧急启动碳管理模块",
+      "sort_order": 10,
+      "related_kpi_tags": [
+        "energy"
+      ]
+    },
+    {
+      "question_id": "4.2",
+      "category": "risk_compliance",
+      "question_text": "自研设备占100%，但OT网络安全是否做过评估？AGV、配方系统若被攻击，是否有应急预案？",
+      "hypothesis": "工控系统暴露面大；未满足IEC 62443",
+      "expected_use": "明确安全加固预算",
+      "sort_order": 11,
+      "related_kpi_tags": []
+    },
+    {
+      "question_id": "4.3",
+      "category": "risk_compliance",
+      "question_text": "二期项目规划中，如何避免一期数据孤岛问题？是否希望新老产线数据标准统一？",
+      "hypothesis": "一期无系统，二期若直接上MES可能重复投资",
+      "expected_use": "推动Data Fabric架构前置",
+      "sort_order": 12,
+      "related_kpi_tags": [
+        "traceability"
+      ]
+    }
+  ],
+  "priority_ranking_options": [
+    {
+      "goal_id": "shorten_delivery",
+      "display_name": "缩短高端订单交货周期（从45天→30天）",
+      "sort_hint": 1
+    },
+    {
+      "goal_id": "improve_yield",
+      "display_name": "提升高强焊材一次合格率（从92%→97%）",
+      "sort_hint": 2
+    },
+    {
+      "goal_id": "carbon_footprint",
+      "display_name": "实现全订单碳足迹自动核算",
+      "sort_hint": 3
+    },
+    {
+      "goal_id": "reduce_downtime",
+      "display_name": "降低非计划停机时间30%",
+      "sort_hint": 4
+    },
+    {
+      "goal_id": "export_compliance_db",
+      "display_name": "建立出口产品合规数据库",
+      "sort_hint": 5
+    }
+  ]
+}

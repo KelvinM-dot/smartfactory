@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jqhc/product-b/observation-forms-legacy",
+  "title": "【已废弃】按工序硬编码观察表单",
+  "description": "已改为配置驱动模型。请使用：form-config-model.json + presets/jqhc-survey-config.json 定义工序与字段；observation-record.json 承载运行时记录。",
+  "deprecated": true,
+  "$comment": "保留此文件仅为向后兼容引用，新开发勿依赖其中 $defs"
+}

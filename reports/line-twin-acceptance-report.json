@@ -1,0 +1,4600 @@
+{
+  "generated_at": "2026-06-06T09:57:52.752Z",
+  "source": {
+    "master_data": "schemas/智造数据台/presets/jqhc-factory-master-data.json",
+    "twin_fallback": "dataplatform-web/src/config/twinFallback.generated.js"
+  },
+  "checklist_version": "1.0",
+  "requirement": "1.txt — 产线数据与 2D/3D 模型严格一致，全链路完备正确",
+  "check_definitions": [
+    {
+      "id": "A01",
+      "cat": "拓扑",
+      "name": "process_steps ↔ flow_path 双向一致",
+      "dim": "2D"
+    },
+    {
+      "id": "A02",
+      "cat": "拓扑",
+      "name": "twin_layouts.steps 覆盖全部工序节点",
+      "dim": "2D"
+    },
+    {
+      "id": "A03",
+      "cat": "2D模型",
+      "name": "每工序 node 含 x/y/label",
+      "dim": "2D"
+    },
+    {
+      "id": "A04",
+      "cat": "设备",
+      "name": "twin.equipment_id ↔ master equipment 一致",
+      "dim": "2D"
+    },
+    {
+      "id": "A05",
+      "cat": "设备",
+      "name": "每工序有且仅有 1 台 enabled 设备",
+      "dim": "数据"
+    },
+    {
+      "id": "B01",
+      "cat": "3D模型",
+      "name": "每工序 position_3d 含 x/y/z/scale/type",
+      "dim": "3D"
+    },
+    {
+      "id": "B02",
+      "cat": "3D模型",
+      "name": "twin_3d_ready 标记一致（产线/布局/前端）",
+      "dim": "3D"
+    },
+    {
+      "id": "B03",
+      "cat": "3D模型",
+      "name": "flowPath 每步在 positions3d 有点位",
+      "dim": "3D"
+    },
+    {
+      "id": "C01",
+      "cat": "数据点",
+      "name": "每设备至少有 1 个 data_point",
+      "dim": "数据"
+    },
+    {
+      "id": "C02",
+      "cat": "数据点",
+      "name": "key_field_id 在 data_points 可解析",
+      "dim": "数据"
+    },
+    {
+      "id": "C03",
+      "cat": "数据点",
+      "name": "key_field 在 telemetry profile 可模拟",
+      "dim": "数据"
+    },
+    {
+      "id": "C04",
+      "cat": "数据点",
+      "name": "data_point.product_line_id 与设备产线一致",
+      "dim": "数据"
+    },
+    {
+      "id": "C05",
+      "cat": "数据点",
+      "name": "profile 工序与设备 process_step_id 一致",
+      "dim": "数据"
+    },
+    {
+      "id": "D01",
+      "cat": "生产链",
+      "name": "产线有归属 recipe",
+      "dim": "生产"
+    },
+    {
+      "id": "D02",
+      "cat": "生产链",
+      "name": "产线有 assigned production_order",
+      "dim": "生产"
+    },
+    {
+      "id": "D03",
+      "cat": "生产链",
+      "name": "运行产线有 in_progress 批次",
+      "dim": "生产"
+    },
+    {
+      "id": "D04",
+      "cat": "生产链",
+      "name": "批次 recipe_id / order product_id 引用有效",
+      "dim": "生产"
+    },
+    {
+      "id": "E01",
+      "cat": "前端",
+      "name": "twinFallback.generated 含该产线布局",
+      "dim": "前端"
+    },
+    {
+      "id": "E02",
+      "cat": "前端",
+      "name": "前端 flowPath 与 master 一致",
+      "dim": "前端"
+    },
+    {
+      "id": "E03",
+      "cat": "前端",
+      "name": "前端 keyFields 与 master 一致",
+      "dim": "前端"
+    },
+    {
+      "id": "E04",
+      "cat": "前端",
+      "name": "前端 positions3d 步骤覆盖 flowPath",
+      "dim": "前端"
+    }
+  ],
+  "summary": {
+    "total_lines": 42,
+    "lines_pass": 41,
+    "lines_warn": 1,
+    "lines_fail": 0,
+    "avg_score": 100
+  },
+  "lines": [
+    {
+      "line_id": "FCW-LINE-01",
+      "name": "药芯焊丝 1 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW01-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW01-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-02",
+      "name": "药芯焊丝 2 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW02-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW02-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-03",
+      "name": "药芯焊丝 3 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW03-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW03-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-04",
+      "name": "药芯焊丝 4 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW04-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW04-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-05",
+      "name": "药芯焊丝 5 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW05-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW05-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-06",
+      "name": "药芯焊丝 6 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW06-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW06-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-07",
+      "name": "药芯焊丝 7 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "3 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-20250606-FCW-EXPORT-HY830"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW-20250605-B2"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-08",
+      "name": "药芯焊丝 8 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW08-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW08-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-09",
+      "name": "药芯焊丝 9 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW09-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW09-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-10",
+      "name": "药芯焊丝 10 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW10-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW10-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-11",
+      "name": "药芯焊丝 11 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "maintenance",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW11-DEMO"
+        },
+        "D03": {
+          "status": "SKIP",
+          "detail": "产线 status=maintenance"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 20,
+      "fail": 0,
+      "warn": 0,
+      "skip": 1,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "FCW-LINE-12",
+      "name": "药芯焊丝 12 号线",
+      "product_category": "flux_core_wire",
+      "category_label": "药芯焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 9,
+      "data_point_count": 22,
+      "process_step_count": 9,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-FCW12-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "FCW12-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SAW-LINE-01",
+      "name": "埋弧焊丝 1 号线",
+      "product_category": "submerged_arc_wire",
+      "category_label": "埋弧焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SAW01-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SAW01-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SAW-LINE-02",
+      "name": "埋弧焊丝 2 号线",
+      "product_category": "submerged_arc_wire",
+      "category_label": "埋弧焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SAW02-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SAW02-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-01",
+      "name": "实心焊丝 1 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SW01-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SW01-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-02",
+      "name": "实心焊丝 2 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "2 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-20250606-SW-DOM-ER50"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SW-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-03",
+      "name": "实心焊丝 3 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SW03-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SW03-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-04",
+      "name": "实心焊丝 4 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SW04-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SW04-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-05",
+      "name": "实心焊丝 5 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "maintenance",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SW05-DEMO"
+        },
+        "D03": {
+          "status": "SKIP",
+          "detail": "产线 status=maintenance"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 20,
+      "fail": 0,
+      "warn": 0,
+      "skip": 1,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-06",
+      "name": "实心焊丝 6 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SW06-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SW06-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-07",
+      "name": "实心焊丝 7 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SW07-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SW07-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "SW-LINE-08",
+      "name": "实心焊丝 8 号线",
+      "product_category": "solid_wire",
+      "category_label": "实心焊丝",
+      "workshop_id": "WS-WIRE-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 6,
+      "data_point_count": 12,
+      "process_step_count": 6,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-SW08-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "SW08-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-01",
+      "name": "焊条 1 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-20250606-WR-HYDRO-E7014"
+        },
+        "D03": {
+          "status": "WARN",
+          "detail": "无 in_progress 批次"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [
+        "D03: 无进行中批次"
+      ],
+      "score": 95,
+      "pass": 20,
+      "fail": 0,
+      "warn": 1,
+      "skip": 0,
+      "overall": "WARN"
+    },
+    {
+      "line_id": "WR-LINE-02",
+      "name": "焊条 2 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR02-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR02-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-03",
+      "name": "焊条 3 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR03-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR03-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-04",
+      "name": "焊条 4 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR04-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR04-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-05",
+      "name": "焊条 5 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR05-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR05-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-06",
+      "name": "焊条 6 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR06-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR06-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-07",
+      "name": "焊条 7 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR07-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR07-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-08",
+      "name": "焊条 8 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR08-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR08-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-09",
+      "name": "焊条 9 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR09-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR09-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-10",
+      "name": "焊条 10 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR10-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR10-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-11",
+      "name": "焊条 11 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR11-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR11-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-12",
+      "name": "焊条 12 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR12-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR12-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-13",
+      "name": "焊条 13 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR13-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR13-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-14",
+      "name": "焊条 14 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR14-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR14-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-15",
+      "name": "焊条 15 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR15-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR15-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-16",
+      "name": "焊条 16 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR16-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR16-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-17",
+      "name": "焊条 17 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR17-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR17-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-18",
+      "name": "焊条 18 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "inactive",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR18-DEMO"
+        },
+        "D03": {
+          "status": "SKIP",
+          "detail": "产线 status=inactive"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 20,
+      "fail": 0,
+      "warn": 0,
+      "skip": 1,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-19",
+      "name": "焊条 19 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR19-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR19-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    },
+    {
+      "line_id": "WR-LINE-20",
+      "name": "焊条 20 号线",
+      "product_category": "welding_rod",
+      "category_label": "焊条",
+      "workshop_id": "WS-ROD-01",
+      "line_status": "active",
+      "simulation_enabled": true,
+      "twin_3d_ready": true,
+      "equipment_count": 7,
+      "data_point_count": 12,
+      "process_step_count": 7,
+      "checks": {
+        "A01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "A05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "B03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "C05": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "D01": {
+          "status": "PASS",
+          "detail": "1 recipe"
+        },
+        "D02": {
+          "status": "PASS",
+          "detail": "PO-202506-WR20-DEMO"
+        },
+        "D03": {
+          "status": "PASS",
+          "detail": "WR20-20250605-B1"
+        },
+        "D04": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E01": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E02": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E03": {
+          "status": "PASS",
+          "detail": ""
+        },
+        "E04": {
+          "status": "PASS",
+          "detail": ""
+        }
+      },
+      "issues": [],
+      "score": 100,
+      "pass": 21,
+      "fail": 0,
+      "warn": 0,
+      "skip": 0,
+      "overall": "PASS"
+    }
+  ]
+}
