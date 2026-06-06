@@ -1,6 +1,6 @@
 # 数据结构目录
 
-两个产品**完全独立**，均采用 **配置驱动**：工序与字段通过 `presets/*.json` 定义，运行时记录用通用结构 + `field_id`。
+智造数据台采用 **配置驱动**：工序与字段通过 `presets/*.json` 定义，运行时记录用通用结构 + `field_id`。
 
 详细原则见 [数据定义说明.md](./数据定义说明.md)。
 
@@ -10,8 +10,8 @@
 
 | 优先级 | 文件 | 说明 |
 |--------|------|------|
-| ★ | `presets/jqhc-manufacturing-config.json` | 金桥完整默认配置（13 工序 / 61 字段 / 3 产品模板） |
-| ★ | `presets/jqhc-factory-master-data.json` | POC 工厂主数据（3 产线 / 设备 / 配方 / 库存 / 仿真 profile） |
+| ★ | `presets/jqhc-manufacturing-config.json` | 完整默认配置（13 工序 / 61 字段 / 3 产品模板） |
+| ★ | `presets/jqhc-factory-master-data.json` | POC 工厂主数据（产线 / 设备 / 配方 / 库存 / 仿真 profile） |
 | ★ | `config-model.json` | 配置 schema（DomainConfig） |
 | ★ | `telemetry-record.json` | 通用运行时遥测（`values` + `field_id`） |
 | | `entities.json` | 产线、设备、数据点、批次、看板 |
@@ -23,34 +23,18 @@
 
 ---
 
-## 现场采集中台（移动）
-
-| 优先级 | 文件 | 说明 |
-|--------|------|------|
-| ★ | `presets/jqhc-survey-config.json` | 金桥完整默认配置（15 工序 / 108 字段 / 3 调研模板） |
-| ★ | `form-config-model.json` | 配置 schema（SurveyDomainConfig） |
-| ★ | `observation-record.json` | 通用观察记录（`field_values` + `field_id`） |
-| | `entities.json` | 调研任务、样例、高价值点 |
-| | `reports-export.json` | 报告、导出、访谈 |
-| | `enums.json` | 枚举 |
-| | `examples.json` | 配置驱动示例 |
-| | `observation-forms.json` | 已废弃 |
-
----
-
 ## 使用顺序（开发/产品设计）
 
 1. 阅读 `数据定义说明.md`
-2. 加载对应 `presets/jqhc-*.json` 作为领域基线
-3. 按 `config-model` / `form-config-model` 扩展工序或字段
-4. 运行时读写 `telemetry-record` / `observation-record` 实例
+2. 加载 `presets/jqhc-manufacturing-config.json` 与 `presets/jqhc-factory-master-data.json` 作为领域基线
+3. 按 `config-model.json` 扩展工序或字段
+4. 运行时读写 `telemetry-record.json` 实例
 5. 元数据实体（设备、批次、任务）引用 `config_id` + `template_id`
 
 ---
 
 ## 统计
 
-| 产品 | 工序 | 字段 | 绑定 | 模板 |
-|------|------|------|------|------|
-| 智造数据台 | 13 | 61 | 126 | 3 |
-| 现场采集中台 | 15 | 108 | 132 | 3 |
+| 工序 | 字段 | 绑定 | 模板 |
+|------|------|------|------|
+| 13 | 61 | 126 | 3 |

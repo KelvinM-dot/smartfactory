@@ -28,6 +28,11 @@ __pycache__/
 # SQLite / runtime data
 **/data/*.db
 **/data/*.db-journal
+dataplatform-api/data/
+
+# 本地验收产物（脚本生成）
+reports/
+docs/line-twin-acceptance-checklist.md
 
 # 本地笔记（不上传）
 科技公司详情
