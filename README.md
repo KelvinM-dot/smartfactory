@@ -1,4 +1,3 @@
-# smartfactory
 
 集成订单、生产、能源等综合业务功能的数字工厂可视化管理 POC（配置驱动制造数据平台）。
 
@@ -64,3 +63,16 @@ npm run dev
 ## 许可证
 
 本项目采用 [GPL-3.0](./LICENSE) 许可证。
+
+
+<img width="1425" height="883" alt="image" src="https://github.com/user-attachments/assets/cc62ec19-7e06-45f6-8fcf-8912dd2ba3fe" />
+<img width="1247" height="715" alt="image" src="https://github.com/user-attachments/assets/95454f2f-f6d5-49a9-9505-0e6733f1f01d" />
+<img width="1250" height="887" alt="image" src="https://github.com/user-attachments/assets/b44cbca7-2df8-463e-88cb-d667a7aa7435" />
+<img width="1238" height="623" alt="image" src="https://github.com/user-attachments/assets/116210a8-7cca-49b5-ab00-91bf96da576a" />
+<img width="1258" height="778" alt="image" src="https://github.com/user-attachments/assets/e1590e4c-90f0-4dea-9a46-1f56b6ccf5fc" />
+
+<img width="1238" height="623" alt="image" src="https://github.com/user-attachments/assets/82419bb4-55f2-49d5-99ba-ec4a435a924e" />
+
+
+
+
